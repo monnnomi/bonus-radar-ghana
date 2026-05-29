@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Bonus Radar Ghana — Compare the Best Casino Bonuses (React + Tailwind)</title>
+<meta name="description" content="Compare casino bonuses, promo codes, free spins and no-deposit offers in Ghana. Wagering, KYC and bonus terms checked before you play." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          ink: "#080b10", ink2: "#0b0f15",
+          surface: "#10161f", surface2: "#161f2a", surface3: "#1d2835",
+          brand: "#1fd98a", brand2: "#16b673",
+          gold: "#efc15c", blue: "#4d9dff",
+          txt: "#eef3f8", muted: "#98a6b5", dim: "#5e6b79"
+        },
+        fontFamily: {
+          display: ['"Space Grotesk"', "system-ui", "sans-serif"],
+          body: ["Manrope", "system-ui", "sans-serif"],
+          mono: ['"JetBrains Mono"', "ui-monospace", "monospace"]
+        },
+        maxWidth: { site: "1200px" }
+      }
+    }
+  };
+</script>
+<style>
+  body { font-family: "Manrope", system-ui, sans-serif; background: #080b10; color: #eef3f8; -webkit-font-smoothing: antialiased; }
+  body::before {
+    content: ""; position: fixed; inset: 0; z-index: -1;
+    background:
+      radial-gradient(900px 520px at 78% -8%, rgba(31,217,138,0.10), transparent 60%),
+      radial-gradient(760px 480px at 8% 4%, rgba(77,157,255,0.07), transparent 58%),
+      linear-gradient(180deg, #0b0f15, #080b10 40%);
+  }
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { scrollbar-width: none; }
+  html { scroll-behavior: smooth; }
+  @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(31,217,138,0.55);} 70% { box-shadow: 0 0 0 8px rgba(31,217,138,0);} 100% { box-shadow: 0 0 0 0 rgba(31,217,138,0);} }
+  .dot-live { animation: pulse 2.4s infinite; }
+  .promo-bg { background: repeating-linear-gradient(45deg, #10161f 0 10px, #0b0f15 10px 20px); }
+  .thumb-bg { background: repeating-linear-gradient(45deg, rgba(255,255,255,0.018) 0 12px, transparent 12px 24px), #161f2a; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<script type="text/babel">
+const { useState, useMemo } = React;
+
+/* ---------------- data ---------------- */
+const BONUSES = [
+  { id:"betway", name:"Betway Ghana", initials:"BW", logoBg:"linear-gradient(135deg,#0b3d2e,#1fd98a)", logoColor:"#04140d",
+    offer:"100% up to GHS 1,000", offerSub:"First deposit match", type:"Welcome Match", typeClass:"emerald",
+    code:"BWGH100", deposit:true, wagering:"8×", kyc:"req", maxCashout:"GHS 5,000", score:8.6,
+    tags:["mobile-money","new-players","fast-withdrawal"], pay:["MTN MoMo","Vodafone Cash","Visa"], momo:true, fast:true,
+    bestFor:"Sports + casino crossover", payments:"MTN MoMo, Vodafone Cash, Visa", avail:"Available now" },
+  { id:"sportybet", name:"SportyBet Ghana", initials:"SB", logoBg:"linear-gradient(135deg,#1a2a40,#4d9dff)", logoColor:"#04101f",
+    offer:"GHS 20 No-Deposit Free Bet", offerSub:"On verified sign-up", type:"No Deposit", typeClass:"blue",
+    code:null, deposit:false, wagering:"3×", kyc:"maybe", maxCashout:"GHS 200", score:9.1,
+    tags:["no-deposit","mobile-money","new-players","low-wagering"], pay:["MTN MoMo","AirtelTigo Money"], momo:true, fast:false,
+    bestFor:"No-deposit testing", payments:"MTN MoMo, AirtelTigo Money", avail:"Available now" },
+  { id:"msport", name:"MSport Ghana", initials:"MS", logoBg:"linear-gradient(135deg,#3a2e0a,#efc15c)", logoColor:"#1a1402",
+    offer:"50 Free Spins", offerSub:"On selected slots", type:"Free Spins", typeClass:"gold",
+    code:"MS50FS", deposit:true, wagering:"35×", kyc:"req", maxCashout:"GHS 800", score:7.2,
+    tags:["free-spins","mobile-money","existing-players"], pay:["MTN MoMo","Vodafone Cash","Bank transfer"], momo:true, fast:false,
+    bestFor:"Slots players", payments:"MTN MoMo, Vodafone Cash, Bank", avail:"Available now" },
+  { id:"jackpotcity", name:"JackpotCity Ghana", initials:"JC", logoBg:"linear-gradient(135deg,#2a1a40,#9d6dff)", logoColor:"#0f0820",
+    offer:"100% up to GHS 5,000", offerSub:"Across first deposits", type:"Welcome Match", typeClass:"emerald",
+    code:"JPCITY", deposit:true, wagering:"50×", kyc:"req", maxCashout:"No cap stated", score:6.4,
+    tags:["new-players","crypto"], pay:["Visa","Crypto","Skrill"], momo:false, fast:false,
+    bestFor:"High-roller casino play", payments:"Visa, Crypto, Skrill", avail:"Available now" },
+  { id:"betwinner", name:"Betwinner Ghana", initials:"BN", logoBg:"linear-gradient(135deg,#0b2a3d,#1fd9c8)", logoColor:"#04140d",
+    offer:"130% up to GHS 1,300", offerSub:"First deposit boost", type:"Welcome Match", typeClass:"emerald",
+    code:"BWIN130", deposit:true, wagering:"5×", kyc:"maybe", maxCashout:"GHS 6,500", score:8.9,
+    tags:["mobile-money","new-players","low-wagering","crypto","fast-withdrawal"], pay:["MTN MoMo","AirtelTigo Money","Crypto"], momo:true, fast:true,
+    bestFor:"Best overall value", payments:"MTN MoMo, AirtelTigo Money, Crypto", avail:"Available now" }
+];
+
+const FILTERS = [
+  {id:"no-deposit",label:"No Deposit"},{id:"free-spins",label:"Free Spins"},{id:"low-wagering",label:"Low Wagering"},
+  {id:"mobile-money",label:"Mobile Money"},{id:"new-players",label:"New Players"},{id:"existing-players",label:"Existing Players"},
+  {id:"crypto",label:"Crypto Accepted"},{id:"fast-withdrawal",label:"Fast Withdrawal"}
+];
+const BEST_FOR = [
+  {award:"Best No-Deposit Bonus", id:"sportybet", stat:"GHS 20 free bet · no deposit"},
+  {award:"Best Free Spins", id:"msport", stat:"50 spins · selected slots"},
+  {award:"Best Low Wagering", id:"betwinner", stat:"5× playthrough"},
+  {award:"Best Mobile Money Casino", id:"betway", stat:"MTN MoMo · Vodafone Cash"},
+  {award:"Best Fast Withdrawal", id:"betway", stat:"Same-day payouts"}
+];
+const HERO_PICKS = [
+  {label:"Best No Deposit", id:"sportybet"},{label:"Best Welcome Bonus", id:"betway"},
+  {label:"Best Low Wagering", id:"betwinner"},{label:"Best Mobile Money", id:"msport"}
+];
+const CRITERIA = [
+  {n:"01",t:"Wagering Requirements",d:"Lower playthrough means real, withdrawable value. We weight this heavily.",w:92},
+  {n:"02",t:"Deposit Requirement",d:"No-deposit and low-deposit offers score higher for accessibility.",w:78},
+  {n:"03",t:"Max Cashout",d:"Caps that limit winnings reduce the practical value of an offer.",w:70},
+  {n:"04",t:"KYC Clarity",d:"Clear, upfront verification rules beat vague terms that delay payouts.",w:65},
+  {n:"05",t:"Expiry Date",d:"Realistic time windows to clear the bonus before it disappears.",w:58},
+  {n:"06",t:"Country Availability",d:"Confirmed availability and payment support for players in Ghana.",w:84},
+  {n:"07",t:"Real Bonus Value",d:"The net of all terms combined — what you can actually take home.",w:96}
+];
+const BLOG = [
+  {cat:"Guide",title:"Best Casino Bonuses in Ghana",excerpt:"Our current top-rated welcome offers, ranked by real withdrawable value.",read:"8 min",date:"May 2026"},
+  {cat:"No Deposit",title:"Best No-Deposit Bonuses in Ghana",excerpt:"Claim free bets and spins without funding your account first.",read:"6 min",date:"May 2026"},
+  {cat:"Free Spins",title:"Best Free Spins Offers",excerpt:"Where to find spins with fair wagering and slots that actually pay.",read:"5 min",date:"Apr 2026"},
+  {cat:"Explained",title:"How Wagering Requirements Work",excerpt:"What 35× really means — and how to calculate it before you claim.",read:"7 min",date:"Apr 2026"},
+  {cat:"How-to",title:"How to Use Casino Promo Codes",excerpt:"Step-by-step: where to enter codes and avoid the common mistakes.",read:"4 min",date:"Mar 2026"}
+];
+
+const KYC_LABEL = { req:"Required", maybe:"May be required", unclear:"Not clear" };
+const KYC_DOT = { req:"#4d9dff", maybe:"#efc15c", unclear:"#98a6b5" };
+const PAY_DOT = { "MTN MoMo":"#efc15c","AirtelTigo Money":"#4d9dff","Vodafone Cash":"#c87d7d","Visa":"#8aa0b8","Crypto":"#1fd98a","Skrill":"#9d6dff","Bank transfer":"#8aa0b8" };
+const TYPE_CLS = {
+  emerald:"text-brand bg-brand/10 border-brand/30",
+  gold:"text-gold bg-gold/10 border-gold/30",
+  blue:"text-blue bg-blue/10 border-blue/30"
+};
+const scoreColor = (s) => s >= 8 ? "#1fd98a" : s >= 6.5 ? "#efc15c" : "#6f8aa3";
+const sortByScore = (a, b) => b.score - a.score;
+const bestId = BONUSES.slice().sort(sortByScore)[0].id;
+
+/* ---------------- small ui ---------------- */
+const Logo = ({ b, cls }) => (
+  <div className={"grid place-items-center font-display font-bold rounded-xl border border-white/10 " + (cls || "w-[46px] h-[46px] text-[17px]")}
+       style={{ background:b.logoBg, color:b.logoColor }}>{b.initials}</div>
+);
+
+function Ring({ score, size=58 }) {
+  const r = (size/2) - 5, c = 2*Math.PI*r, col = scoreColor(score);
+  return (
+    <div className="relative flex-none" style={{ width:size, height:size }} title={`Bonus Value Score ${score}/10`}>
+      <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} style={{ transform:"rotate(-90deg)" }}>
+        <circle cx={size/2} cy={size/2} r={r} fill="none" stroke="#1d2835" strokeWidth="5" />
+        <circle cx={size/2} cy={size/2} r={r} fill="none" stroke={col} strokeWidth="5" strokeLinecap="round"
+          strokeDasharray={c} strokeDashoffset={c*(1 - score/10)} />
+      </svg>
+      <div className="absolute inset-0 flex flex-col items-center justify-center">
+        <b className="font-mono font-bold text-[17px] leading-none" style={{ color:col }}>{score}</b>
+        <small className="font-mono text-[8px] text-dim mt-[1px]">/ 10</small>
+      </div>
+    </div>
+  );
+}
+
+const Eyebrow = ({ children }) => (
+  <span className="inline-flex items-center gap-2 font-mono text-[11.5px] tracking-[0.16em] uppercase text-brand mb-3.5
+                   before:content-[''] before:w-[18px] before:h-px before:bg-brand/30">{children}</span>
+);
+const SectionHead = ({ eyebrow, title, sub }) => (
+  <div className="max-w-[620px] mb-9">
+    <Eyebrow>{eyebrow}</Eyebrow>
+    <h2 className="font-display font-semibold tracking-[-0.02em] leading-[1.08] text-[clamp(26px,4.6vw,40px)]">{title}</h2>
+    {sub && <p className="mt-3.5 text-muted text-[16px] [text-wrap:pretty]">{sub}</p>}
+  </div>
+);
+
+/* ---------------- bonus card ---------------- */
+function PayRow({ b }) {
+  return (
+    <div className="mb-4">
+      <div className="font-mono text-[10px] tracking-[0.1em] uppercase text-muted mb-2.5">Pay in &amp; out</div>
+      <div className="flex flex-wrap gap-[7px]">
+        {b.pay.map(p => (
+          <span key={p} className="inline-flex items-center gap-1.5 text-[12px] font-semibold px-2.5 py-[5px] rounded-[7px] bg-surface3 border border-white/10">
+            <span className="w-[7px] h-[7px] rounded-full flex-none" style={{ background:PAY_DOT[p]||"#8aa0b8" }}></span>{p}
+          </span>
+        ))}
+      </div>
+      {(b.momo || b.fast) && (
+        <div className="flex flex-wrap gap-[7px] mt-2">
+          {b.momo && <span className="inline-flex items-center gap-1.5 text-[11.5px] font-semibold px-2.5 py-[5px] rounded-[7px] text-brand bg-brand/10 border border-brand/30 before:content-[''] before:w-1.5 before:h-1.5 before:rounded-full before:bg-current">Mobile Money supported</span>}
+          {b.fast && <span className="inline-flex items-center gap-1.5 text-[11.5px] font-semibold px-2.5 py-[5px] rounded-[7px] text-blue bg-blue/10 border border-blue/30 before:content-[''] before:w-1.5 before:h-1.5 before:rounded-full before:bg-current">Fast withdrawal</span>}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function DataCell({ k, children }) {
+  return (
+    <div className="bg-surface3 px-3.5 py-3">
+      <div className="font-mono text-[10.5px] tracking-[0.08em] uppercase text-muted flex items-center gap-1.5">{k}</div>
+      <div className="font-bold text-[15.5px] text-txt mt-[5px] flex items-center gap-1.5 tracking-[-0.01em]">{children}</div>
+    </div>
+  );
+}
+
+function BonusCard({ b }) {
+  const [copied, setCopied] = useState(false);
+  const isBest = b.id === bestId;
+  const copy = () => { navigator.clipboard?.writeText(b.code).catch(()=>{}); setCopied(true); setTimeout(()=>setCopied(false),1500); };
+  return (
+    <article className={"relative flex flex-col rounded-[20px] border bg-gradient-to-b from-surface2 to-surface p-[22px] shadow-[0_24px_48px_-24px_rgba(0,0,0,0.7)] transition hover:-translate-y-[3px] hover:shadow-[0_26px_50px_-28px_rgba(0,0,0,0.8)] "
+      + (isBest ? "border-brand/30" : "border-white/10 hover:border-brand/30")}>
+      {isBest && <div className="absolute -top-px right-[18px] font-mono text-[10px] tracking-[0.14em] uppercase font-bold text-[#04140d] bg-gradient-to-b from-brand to-brand2 px-2.5 pt-[5px] pb-1 rounded-b-lg">Best value</div>}
+      <div className="flex items-start gap-3.5">
+        <Logo b={b} />
+        <div className="flex-1 min-w-0">
+          <div className="font-display font-semibold text-[16.5px] tracking-[-0.01em]">{b.name}</div>
+          <div className="flex items-center gap-1.5 mt-1 flex-wrap">
+            <span className={"text-[11px] font-semibold px-2 py-[3px] rounded-md border " + TYPE_CLS[b.typeClass]}>{b.type}</span>
+            <span className="text-[11px] font-semibold px-2 py-[3px] rounded-md border border-white/10 bg-surface3 text-muted">🇬🇭 Ghana</span>
+          </div>
+        </div>
+        <Ring score={b.score} />
+      </div>
+
+      <div className="mt-[18px] mb-1 font-display font-semibold text-[23px] tracking-[-0.02em] leading-[1.1]">{b.offer}</div>
+      <div className="text-[13px] text-muted">{b.offerSub}</div>
+
+      <div className="grid grid-cols-2 gap-px my-[18px] rounded-[14px] overflow-hidden border border-white/10 bg-white/10">
+        <DataCell k="Wagering"><span className="font-mono">{b.wagering}</span></DataCell>
+        <DataCell k="Deposit req."><span style={{ color: b.deposit ? "#f0d68a" : "#1fd98a" }}>{b.deposit ? "Yes" : "No"}</span></DataCell>
+        <DataCell k="KYC"><span className="w-2 h-2 rounded-full flex-none" style={{ background:KYC_DOT[b.kyc] }}></span>{KYC_LABEL[b.kyc]}</DataCell>
+        <DataCell k="Max cashout">{b.maxCashout}</DataCell>
+      </div>
+
+      <PayRow b={b} />
+
+      {b.code ? (
+        <div className="promo-bg flex items-center justify-between gap-2.5 px-3.5 py-3 rounded-[14px] border border-dashed border-white/15 mb-4">
+          <div>
+            <div className="font-mono text-[10px] tracking-[0.1em] uppercase text-dim">Promo code</div>
+            <div className="font-mono font-bold text-[16px] tracking-[0.05em]">{b.code}</div>
+          </div>
+          <button onClick={copy} className={"inline-flex items-center gap-1.5 font-mono text-[11px] font-semibold px-3 py-2 rounded-lg border min-h-[36px] transition " + (copied ? "bg-brand text-[#04140d] border-brand" : "bg-brand/10 text-brand border-brand/30 hover:bg-brand hover:text-[#04140d]")}>
+            {copied ? "✓ COPIED" : "COPY"}
+          </button>
+        </div>
+      ) : (
+        <div className="promo-bg flex items-center px-3.5 py-3 rounded-[14px] border border-dashed border-white/15 mb-4">
+          <div>
+            <div className="font-mono text-[10px] tracking-[0.1em] uppercase text-dim">Promo code</div>
+            <div className="font-mono text-[13px] font-medium text-dim">No code needed — auto-applied</div>
+          </div>
+        </div>
+      )}
+
+      <div className="flex items-center gap-2 mt-auto">
+        <a href="#" className="flex-1 inline-flex items-center justify-center gap-2 font-bold text-[15px] min-h-[50px] rounded-[13px] text-[#04140d] bg-gradient-to-b from-brand to-brand2 shadow-[0_10px_26px_-10px_rgba(31,217,138,0.85)] transition hover:brightness-105 active:translate-y-px group">
+          Claim Bonus <span className="transition group-hover:translate-x-1">→</span>
+        </a>
+        <a href="#reviews" className="inline-flex items-center min-h-[50px] px-3 rounded-[11px] border border-white/10 text-[13px] font-semibold text-muted transition hover:text-brand hover:border-brand/30 hover:bg-brand/10">Read Review</a>
+      </div>
+      <p className="mt-[11px] text-center font-mono text-[10.5px] tracking-[0.04em] text-dim">18+ · Terms apply · Check operator rules</p>
+    </article>
+  );
+}
+
+/* ---------------- chips / filters ---------------- */
+function Chip({ active, onClick, children }) {
+  return (
+    <button onClick={onClick} aria-pressed={active}
+      className={"inline-flex items-center gap-2 whitespace-nowrap text-[13.5px] font-medium px-[15px] min-h-[42px] rounded-full border transition flex-none "
+        + (active ? "bg-brand/10 border-brand text-brand" : "bg-surface border-white/10 text-muted hover:text-txt hover:border-brand/30")}>
+      <span className="w-1.5 h-1.5 rounded-full bg-current opacity-60"></span>{children}
+    </button>
+  );
+}
+
+/* ---------------- award / review / blog cards ---------------- */
+function AwardCard({ x }) {
+  const b = BONUSES.find(z => z.id === x.id);
+  return (
+    <a href="#bonuses" className="flex flex-col gap-3.5 p-[18px] rounded-[20px] border border-white/10 bg-gradient-to-b from-surface2 to-surface transition hover:-translate-y-[3px] hover:border-brand/30 hover:shadow-[0_20px_40px_-24px_rgba(0,0,0,0.8)]">
+      <div className="font-display font-semibold text-[14.5px] leading-tight tracking-[-0.01em] min-h-[2.4em]">{x.award}</div>
+      <div className="flex items-center gap-2.5">
+        <Logo b={b} cls="w-10 h-10 text-[14px] rounded-[10px]" />
+        <div className="flex flex-col min-w-0 flex-1">
+          <span className="font-semibold text-[14px] truncate">{b.name}</span>
+          <span className="font-mono text-[11px] text-muted">{x.stat}</span>
+        </div>
+        <span className="font-mono font-bold text-[17px] flex-none" style={{ color:scoreColor(b.score) }}>{b.score}</span>
+      </div>
+    </a>
+  );
+}
+
+function ReviewCard({ b }) {
+  const full = Math.round(b.score/2);
+  return (
+    <article className="flex flex-col p-5 rounded-[20px] border border-white/10 bg-surface transition hover:-translate-y-0.5 hover:border-brand/30">
+      <div className="flex items-center gap-3.5">
+        <Logo b={b} cls="w-[50px] h-[50px] text-[16px]" />
+        <div>
+          <div className="font-display font-semibold text-[16px]">{b.name}</div>
+          <div className="flex items-center gap-2 mt-1.5">
+            <span className="inline-flex gap-0.5">{[0,1,2,3,4].map(i => <span key={i} style={{ color: i<full ? "#efc15c" : "#1d2835" }}>★</span>)}</span>
+            <span className="font-mono font-bold text-[15px]" style={{ color:scoreColor(b.score) }}>{b.score}</span>
+          </div>
+        </div>
+      </div>
+      <div className="my-4 flex flex-col gap-2.5">
+        {[["Best for",b.bestFor],["Payments",b.payments],["Bonus",b.avail]].map(([k,v]) => (
+          <div key={k} className="flex justify-between gap-3 text-[13px]"><span className="text-dim">{k}</span><span className="text-txt font-medium text-right">{v}</span></div>
+        ))}
+      </div>
+      <a href="#" className="mt-auto inline-flex items-center justify-center min-h-[44px] rounded-[11px] border border-white/10 bg-surface font-semibold text-[14px] text-txt transition hover:bg-surface2 hover:border-brand/30">Read Full Review</a>
+    </article>
+  );
+}
+
+function BlogCard({ p }) {
+  return (
+    <article className="flex flex-col rounded-[20px] border border-white/10 bg-surface overflow-hidden transition hover:-translate-y-0.5 hover:border-brand/30">
+      <div className="thumb-bg aspect-video relative grid place-items-center border-b border-white/10">
+        <span className="absolute top-3 left-3 font-mono text-[10px] tracking-[0.1em] uppercase px-2.5 py-1 rounded-md bg-ink/70 backdrop-blur border border-white/10 text-brand">{p.cat}</span>
+        <span className="font-mono text-[11px] text-dim tracking-[0.08em]">[ article image ]</span>
+      </div>
+      <div className="p-[18px] flex flex-col flex-1">
+        <h3 className="font-display font-semibold text-[17px] leading-tight tracking-[-0.01em]">{p.title}</h3>
+        <p className="mt-2 text-[13.5px] text-muted flex-1 [text-wrap:pretty]">{p.excerpt}</p>
+        <div className="mt-4 flex items-center gap-2.5 text-[12px] text-dim font-mono">
+          <span>{p.date}</span><span>·</span><span>{p.read} read</span>
+          <a href="#" className="ml-auto text-brand font-semibold">Read →</a>
+        </div>
+      </div>
+    </article>
+  );
+}
+
+/* ---------------- sections ---------------- */
+const NAV = ["Casino Bonuses","No Deposit","Free Spins","Promo Codes","Reviews","Guides"];
+
+function Header() {
+  const [open, setOpen] = useState(false);
+  return (
+    <header className="sticky top-0 z-50 backdrop-blur-xl bg-ink/70 border-b border-white/[0.07]">
+      <div className="mx-auto max-w-site px-5 flex items-center gap-5 h-[66px]">
+        <a href="#" className="flex items-center gap-2.5 font-display font-semibold whitespace-nowrap">
+          <span className="relative w-[34px] h-[34px] grid place-items-center rounded-[10px] bg-surface2 border border-brand/30 flex-none">
+            <span className="w-[7px] h-[7px] rounded-full bg-brand shadow-[0_0_0_5px_rgba(31,217,138,0.18),0_0_0_10px_rgba(31,217,138,0.08)]"></span>
+          </span>
+          <span><b className="text-[15.5px]">Bonus Radar</b><small className="block text-[10px] text-dim font-mono tracking-[0.12em]">GHANA</small></span>
+        </a>
+        <nav className="hidden lg:flex items-center gap-1 ml-2">
+          {NAV.map(n => <a key={n} href="#bonuses" className="text-[14px] text-muted px-3 py-2 rounded-lg transition hover:text-txt hover:bg-surface2">{n}</a>)}
+        </nav>
+        <div className="flex items-center gap-2.5 ml-auto">
+          <div className="hidden lg:flex items-center gap-2 text-[13px] px-3 py-2 rounded-full border border-white/10 bg-surface">
+            <span className="w-[18px] h-[13px] rounded-sm flex-none" style={{ background:"linear-gradient(180deg,#ce1126 33%,#fcd116 33% 66%,#006b3f 66%)" }}></span>Ghana
+          </div>
+          <a href="#bonuses" className="inline-flex items-center justify-center whitespace-nowrap font-bold text-[13px] min-h-[38px] px-3.5 rounded-[11px] text-[#04140d] bg-gradient-to-b from-brand to-brand2 shadow-[0_8px_22px_-10px_rgba(31,217,138,0.7)]">View Bonuses</a>
+          <button onClick={()=>setOpen(!open)} className="lg:hidden grid place-items-center w-11 h-11 rounded-[11px] border border-white/10 bg-surface" aria-label="Menu">
+            <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          </button>
+        </div>
+      </div>
+      {open && (
+        <nav className="lg:hidden flex flex-col gap-0.5 px-5 pb-4 pt-2.5 border-b border-white/[0.07] bg-ink/95">
+          {NAV.map(n => <a key={n} href="#bonuses" onClick={()=>setOpen(false)} className="px-3 py-3 rounded-[10px] text-[15px] text-muted hover:bg-surface2 hover:text-txt">{n}</a>)}
+        </nav>
+      )}
+    </header>
+  );
+}
+
+const TRUST_BADGES = [
+  { t:"18+ Only", icon:<g><circle cx="12" cy="12" r="9"/><path d="M9 12l2 2 4-4"/></g> },
+  { t:"Gamble Responsibly", icon:<path d="M12 2l8 4v6c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6z"/> },
+  { t:"Bonus Terms Checked", icon:<path d="M4 12l5 5L20 6"/> },
+  { t:"Ghana-Focused Offers", icon:<g><circle cx="12" cy="10" r="3"/><path d="M12 2a8 8 0 0 0-8 8c0 5 8 12 8 12s8-7 8-12a8 8 0 0 0-8-8z"/></g> }
+];
+
+function Hero() {
+  return (
+    <section className="pt-[54px] pb-10">
+      <div className="mx-auto max-w-site px-5 grid gap-9 md:grid-cols-[1.05fr_0.95fr] md:items-center">
+        <div>
+          <span className="inline-flex items-center gap-2 font-mono text-[12px] text-muted px-3.5 py-[7px] rounded-full border border-white/[0.07] bg-surface mb-[22px]">
+            <span className="dot-live w-[7px] h-[7px] rounded-full bg-brand"></span>Bonus terms checked · Updated May 2026
+          </span>
+          <h1 className="font-display font-semibold leading-[1.02] tracking-[-0.03em] text-[clamp(34px,7.4vw,60px)]">
+            Find <span className="bg-gradient-to-r from-brand to-[#f5d66e] bg-clip-text text-transparent">Real</span> Casino Bonuses in Ghana — Ranked by Value, Not Hype
+          </h1>
+          <p className="mt-5 text-muted text-[clamp(16px,2.2vw,19px)] max-w-[540px] [text-wrap:pretty]">Compare free spins, no-deposit offers, promo codes, wagering terms and mobile money support before you claim.</p>
+          <div className="flex flex-wrap gap-3 mt-[30px]">
+            <a href="#bonuses" className="inline-flex items-center justify-center font-bold text-[15px] min-h-[52px] px-6 rounded-[11px] text-[#04140d] bg-gradient-to-b from-brand to-brand2 shadow-[0_10px_26px_-10px_rgba(31,217,138,0.85)] transition hover:brightness-105">View Today’s Bonuses</a>
+            <a href="#rate" className="inline-flex items-center justify-center font-semibold text-[15px] min-h-[52px] px-6 rounded-[11px] border border-white/10 bg-surface transition hover:border-brand/30 hover:bg-surface2">How We Rate Bonuses</a>
+          </div>
+          <div className="grid grid-cols-2 gap-2.5 mt-[34px] max-w-[540px]">
+            {TRUST_BADGES.map(x => (
+              <div key={x.t} className="flex items-center gap-2.5 px-3.5 py-3 rounded-[14px] border border-white/[0.07] bg-surface text-[13px] font-medium">
+                <span className="w-[26px] h-[26px] flex-none grid place-items-center rounded-lg bg-brand/10 text-brand">
+                  <svg viewBox="0 0 24 24" className="w-[15px] h-[15px]" fill="none" stroke="currentColor" strokeWidth="2">{x.icon}</svg>
+                </span>{x.t}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <aside className="relative rounded-[28px] border border-white/10 bg-surface p-5 overflow-hidden shadow-[0_24px_48px_-24px_rgba(0,0,0,0.7)]">
+          <div className="absolute w-[360px] h-[360px] -right-[120px] -top-[120px] rounded-full" style={{ background:"radial-gradient(circle, rgba(31,217,138,0.16), transparent 65%)" }}></div>
+          <div className="flex items-center justify-between mb-4 relative">
+            <span className="font-mono text-[11.5px] tracking-[0.14em] uppercase text-dim">Top value today</span>
+            <span className="inline-flex items-center gap-1.5 font-mono text-[11.5px] text-brand"><span className="dot-live w-[7px] h-[7px] rounded-full bg-brand"></span>Live ranking</span>
+          </div>
+          <div className="flex flex-col gap-2.5 relative">
+            {HERO_PICKS.map(p => {
+              const b = BONUSES.find(z => z.id === p.id);
+              return (
+                <div key={p.id} className="grid grid-cols-[34px_1fr_auto] items-center gap-3 p-3.5 rounded-[14px] bg-surface2 border border-white/[0.07]">
+                  <Logo b={b} cls="w-[34px] h-[34px] text-[14px] rounded-[9px]" />
+                  <div className="min-w-0">
+                    <div className="font-mono text-[9.5px] tracking-[0.1em] uppercase text-brand mb-[3px]">{p.label}</div>
+                    <div className="font-semibold text-[14px]">{b.name}</div>
+                    <div className="font-mono text-[12px] text-muted">{b.offer}</div>
+                  </div>
+                  <div className="font-mono font-bold text-[15px] px-2.5 py-1 rounded-lg" style={{ color:scoreColor(b.score), background:scoreColor(b.score)+"1f" }}>{b.score}</div>
+                </div>
+              );
+            })}
+          </div>
+        </aside>
+      </div>
+    </section>
+  );
+}
+
+const COMPLIANCE = [
+  { t:"Ghana availability checked", icon:<g><circle cx="12" cy="10" r="3"/><path d="M12 2a8 8 0 0 0-8 8c0 5 8 12 8 12s8-7 8-12a8 8 0 0 0-8-8z"/></g> },
+  { t:"Bonus terms reviewed", icon:<g><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M9 14l2 2 4-4"/></g> },
+  { t:"Payment methods checked", icon:<g><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></g> },
+  { t:"18+ only", icon:<g><circle cx="12" cy="12" r="9"/><path d="M9 12l2 2 4-4"/></g> },
+  { t:"Affiliate disclosure", icon:<g><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></g>, gold:true }
+];
+function ComplianceStrip() {
+  return (
+    <section className="border-y border-white/[0.07] bg-ink2">
+      <div className="mx-auto max-w-site px-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-x-7 py-4">
+        {COMPLIANCE.map(x => (
+          <div key={x.t} className={"flex items-center gap-2.5 py-2.5 text-[13px] font-medium " + (x.gold ? "text-muted" : "text-txt")}>
+            <span className={"w-7 h-7 flex-none grid place-items-center rounded-lg " + (x.gold ? "bg-gold/10 text-gold" : "bg-brand/10 text-brand")}>
+              <svg viewBox="0 0 24 24" className="w-[15px] h-[15px]" fill="none" stroke="currentColor" strokeWidth="2">{x.icon}</svg>
+            </span>{x.t}
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function BestFor() {
+  return (
+    <section id="best-for" className="pt-[72px] pb-10">
+      <div className="mx-auto max-w-site px-5">
+        <SectionHead eyebrow="Category winners" title="Best for what you came for" sub="Top pick in each category, scored on real withdrawable value. Terms apply." />
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3.5">
+          {BEST_FOR.map(x => <AwardCard key={x.award} x={x} />)}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Bonuses() {
+  const [active, setActive] = useState(new Set());
+  const toggle = (id) => { const n = new Set(active); n.has(id) ? n.delete(id) : n.add(id); setActive(n); };
+  const list = useMemo(() => {
+    let l = BONUSES.slice().sort(sortByScore);
+    if (active.size) l = l.filter(b => [...active].every(f => b.tags.includes(f)));
+    return l;
+  }, [active]);
+  const table = BONUSES.slice().sort(sortByScore);
+  return (
+    <>
+      <div className="sticky top-[66px] z-30 bg-ink/80 backdrop-blur border-y border-white/[0.07] py-3.5">
+        <div className="mx-auto max-w-site px-5">
+          <div className="flex gap-2.5 overflow-x-auto no-scrollbar">
+            {FILTERS.map(f => <Chip key={f.id} active={active.has(f.id)} onClick={()=>toggle(f.id)}>{f.label}</Chip>)}
+            <button onClick={()=>setActive(new Set())} className="inline-flex items-center whitespace-nowrap text-[13.5px] font-medium px-[15px] min-h-[42px] rounded-full border border-white/10 bg-surface text-dim flex-none">Clear all</button>
+          </div>
+        </div>
+      </div>
+
+      <section id="bonuses" className="py-[72px]">
+        <div className="mx-auto max-w-site px-5">
+          <SectionHead eyebrow="Bonus comparison" title="Today’s casino bonuses, ranked by real value" sub="Every offer is scored on withdrawable value — not headline size. Tap a filter above to narrow the list." />
+          {list.length ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-[18px]">
+              {list.map(b => <BonusCard key={b.id} b={b} />)}
+            </div>
+          ) : (
+            <div className="text-center py-12 px-5 text-muted border border-dashed border-white/15 rounded-[20px]">No bonuses match all selected filters. Try removing one.</div>
+          )}
+
+          <div className="mt-14">
+            <SectionHead eyebrow="Full comparison" title="Side-by-side table" sub="The complete view — scroll horizontally on mobile to see every term." />
+            <div className="border border-white/[0.07] rounded-[20px] overflow-hidden bg-surface">
+              <div className="overflow-x-auto">
+                <table className="w-full border-collapse min-w-[860px]">
+                  <thead>
+                    <tr>{["Casino","Bonus","Type","Code","Wagering","Deposit","KYC","Score",""].map((h,i) =>
+                      <th key={i} className="font-mono text-[10.5px] tracking-[0.1em] uppercase text-dim text-left px-4 py-3.5 bg-ink2 border-b border-white/[0.07] whitespace-nowrap">{h}</th>)}</tr>
+                  </thead>
+                  <tbody>
+                    {table.map(b => (
+                      <tr key={b.id} className="hover:bg-surface2">
+                        <td className="px-4 py-4 border-b border-white/[0.07]"><div className="flex items-center gap-2.5"><Logo b={b} cls="w-[38px] h-[38px] text-[14px] rounded-[10px]" /><span className="font-display font-semibold text-[14px]">{b.name}</span></div></td>
+                        <td className="px-4 py-4 border-b border-white/[0.07] font-semibold text-[14px]">{b.offer}</td>
+                        <td className="px-4 py-4 border-b border-white/[0.07]"><span className={"text-[11px] font-semibold px-2 py-[3px] rounded-md border " + TYPE_CLS[b.typeClass]}>{b.type}</span></td>
+                        <td className="px-4 py-4 border-b border-white/[0.07] font-mono text-[13px] text-brand">{b.code || "—"}</td>
+                        <td className="px-4 py-4 border-b border-white/[0.07] font-mono text-[14px]">{b.wagering}</td>
+                        <td className="px-4 py-4 border-b border-white/[0.07] font-semibold text-[14px]" style={{ color: b.deposit ? "#f0d68a" : "#1fd98a" }}>{b.deposit ? "Yes" : "No"}</td>
+                        <td className="px-4 py-4 border-b border-white/[0.07] text-[14px]"><span className="inline-flex items-center gap-1.5"><span className="w-2 h-2 rounded-full" style={{ background:KYC_DOT[b.kyc] }}></span>{KYC_LABEL[b.kyc]}</span></td>
+                        <td className="px-4 py-4 border-b border-white/[0.07] font-mono font-bold text-[16px]" style={{ color:scoreColor(b.score) }}>{b.score}</td>
+                        <td className="px-4 py-4 border-b border-white/[0.07]"><a href="#" className="inline-flex items-center justify-center font-bold text-[13px] min-h-[38px] px-3.5 rounded-[11px] text-[#04140d] bg-gradient-to-b from-brand to-brand2">Claim</a></td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <p className="mt-3.5 font-mono text-[11px] tracking-[0.03em] text-dim">All offers: 18+ · Terms apply · Check operator rules · Availability may change</p>
+          </div>
+        </div>
+      </section>
+    </>
+  );
+}
+
+function HowWeRate() {
+  return (
+    <section id="rate" className="py-[72px] bg-ink2 border-y border-white/[0.07]">
+      <div className="mx-auto max-w-site px-5">
+        <SectionHead eyebrow="Methodology" title="How we rate bonuses" sub="A Bonus Value Score of 0–10 is built from seven weighted factors. The bars show how much each one moves the score." />
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
+          {CRITERIA.map(c => (
+            <div key={c.n} className="p-[22px] rounded-[20px] border border-white/[0.07] bg-surface transition hover:-translate-y-0.5 hover:border-brand/30">
+              <div className="font-mono text-[12px] text-brand mb-3.5">{c.n}</div>
+              <h3 className="font-display font-semibold text-[17px]">{c.t}</h3>
+              <p className="mt-2 text-muted text-[14px] [text-wrap:pretty]">{c.d}</p>
+              <div className="mt-3.5 h-[5px] rounded-full bg-surface3 overflow-hidden"><i className="block h-full rounded-full bg-gradient-to-r from-brand to-brand2" style={{ width:c.w+"%" }}></i></div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Reviews() {
+  return (
+    <section id="reviews" className="py-[72px]">
+      <div className="mx-auto max-w-site px-5">
+        <SectionHead eyebrow="Operator reviews" title="Casino reviews for Ghana" sub="What each operator is best for, how you pay in and out, and where the bonus stands today." />
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+          {BONUSES.slice().sort(sortByScore).map(b => <ReviewCard key={b.id} b={b} />)}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function ResponsibleGambling() {
+  return (
+    <section className="py-[72px]">
+      <div className="mx-auto max-w-site px-5">
+        <div className="rounded-[28px] border border-white/10 bg-surface p-9 grid gap-7 lg:grid-cols-[1.4fr_0.9fr] lg:items-start"
+             style={{ background:"radial-gradient(700px 300px at 90% 10%, rgba(77,157,255,0.08), transparent 60%), #10161f" }}>
+          <div>
+            <div className="flex items-center gap-5">
+              <div className="grid place-items-center w-[84px] h-[84px] rounded-full border-2 border-brand font-display font-bold text-[26px] text-brand flex-none">18+</div>
+              <div>
+                <Eyebrow>Play it safe</Eyebrow>
+                <h2 className="font-display font-semibold tracking-[-0.02em] text-[clamp(22px,3.2vw,30px)]">Gambling is for adults only.</h2>
+              </div>
+            </div>
+            <p className="mt-3.5 text-muted text-[16px] max-w-[520px] [text-wrap:pretty]">Play responsibly. Never gamble with money you cannot afford to lose. Bonuses are entertainment, not income.</p>
+            <div className="flex flex-wrap gap-2.5 mt-5">
+              {["18+","Terms apply","Availability may change","Check local laws & operator terms"].map(p =>
+                <span key={p} className="inline-flex items-center text-[13px] font-semibold px-3.5 py-2.5 rounded-full border border-white/10 bg-surface2">{p}</span>)}
+            </div>
+          </div>
+          <div className="flex flex-col gap-3.5">
+            <div className="p-[18px] rounded-[14px] border border-white/[0.07] bg-ink2">
+              <div className="font-semibold text-[14px] mb-1.5">Set limits before you start</div>
+              <p className="text-[13px] text-muted">Decide a deposit and time budget in advance. Use operator tools to set deposit, loss and session limits.</p>
+            </div>
+            <div className="p-[18px] rounded-[14px] border border-white/[0.07] bg-ink2">
+              <div className="font-semibold text-[14px] mb-1.5">Need support?</div>
+              <p className="text-[13px] text-muted">If gambling stops being fun, take a break. Self-exclusion and cooling-off tools are available with every licensed operator.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Blog() {
+  return (
+    <section id="guides" className="py-[72px] bg-ink2 border-y border-white/[0.07]">
+      <div className="mx-auto max-w-site px-5">
+        <SectionHead eyebrow="Guides & insights" title="Understand bonuses before you claim" sub="Plain-English guides to wagering, no-deposit offers and promo codes for players in Ghana." />
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {BLOG.map(p => <BlogCard key={p.title} p={p} />)}
+        </div>
+        <div className="flex justify-center mt-[34px]"><a href="#" className="inline-flex items-center justify-center font-semibold text-[14px] min-h-[44px] px-5 rounded-[11px] border border-white/10 bg-surface transition hover:border-brand/30 hover:bg-surface2">Browse all guides</a></div>
+      </div>
+    </section>
+  );
+}
+
+const FOOT = {
+  Company:["About","Contact","Sitemap"],
+  Bonuses:["Casino Bonuses","No Deposit","Free Spins","Promo Codes"],
+  Resources:["Reviews","Guides","How We Rate"],
+  Legal:["Responsible Gambling","Affiliate Disclosure","Privacy Policy","Terms"]
+};
+function Footer() {
+  return (
+    <footer className="border-t border-white/[0.07] pt-12 pb-10">
+      <div className="mx-auto max-w-site px-5">
+        <div className="flex items-start gap-3 p-4 rounded-[14px] border border-white/[0.07] bg-surface text-[13px] text-muted mb-10 [text-wrap:pretty]">
+          <span className="text-gold flex-none"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></span>
+          <span><b className="text-txt font-semibold">Affiliate disclosure.</b> We may earn affiliate commissions from some links. This does not affect our ratings. Bonus availability can change and depends on operator terms, KYC, payment methods and local regulations.</span>
+        </div>
+        <div className="grid gap-8 md:grid-cols-[1.4fr_2fr]">
+          <div>
+            <a href="#" className="flex items-center gap-2.5 font-display font-semibold">
+              <span className="relative w-[34px] h-[34px] grid place-items-center rounded-[10px] bg-surface2 border border-brand/30"><span className="w-[7px] h-[7px] rounded-full bg-brand"></span></span>
+              <span><b className="text-[15.5px]">Bonus Radar</b><small className="block text-[10px] text-dim font-mono tracking-[0.12em]">GHANA</small></span>
+            </a>
+            <p className="text-muted text-[14px] mt-3.5 max-w-[320px] [text-wrap:pretty]">Independent comparison of casino and betting bonuses for players in Ghana and English-speaking Africa. Terms checked, value scored.</p>
+            <div className="flex flex-wrap gap-2.5 mt-[18px]">{["18+","Gamble Responsibly"].map(p => <span key={p} className="inline-flex items-center text-[13px] font-semibold px-3.5 py-2.5 rounded-full border border-white/10 bg-surface2">{p}</span>)}</div>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            {Object.entries(FOOT).map(([h, links]) => (
+              <div key={h}>
+                <h4 className="font-mono text-[11px] tracking-[0.12em] uppercase text-dim mb-3.5">{h}</h4>
+                {links.map(l => <a key={l} href="#" className="block py-1.5 text-muted text-[14px] transition hover:text-brand">{l}</a>)}
+              </div>
+            ))}
+          </div>
+        </div>
+        <p className="mt-9 pt-[26px] border-t border-white/[0.07] text-[12.5px] text-dim leading-relaxed [text-wrap:pretty]">
+          Gambling involves risk. Bonus Radar Ghana provides information for adults aged 18 and over. We do not operate gambling services. All bonus terms — including wagering, maximum cashout, KYC and expiry — are set by the operators and can change at any time. Always confirm the current terms, country availability and the legal status of online gambling in your location before claiming any offer.
+        </p>
+        <div className="mt-[22px] flex flex-wrap gap-3 items-center justify-between text-[12px] text-dim">
+          <span>© 2026 Bonus Radar Ghana. All rights reserved.</span>
+          <div className="flex gap-2 flex-wrap">{["18+ ONLY","TERMS APPLY","PLAY RESPONSIBLY"].map(b => <span key={b} className="font-mono text-[10px] tracking-[0.08em] px-2.5 py-[5px] rounded-md border border-white/10 bg-surface">{b}</span>)}</div>
+        </div>
+      </div>
+    </footer>
+  );
+}
+
+function App() {
+  return (
+    <>
+      <Header />
+      <Hero />
+      <ComplianceStrip />
+      <BestFor />
+      <Bonuses />
+      <HowWeRate />
+      <Reviews />
+      <ResponsibleGambling />
+      <Blog />
+      <Footer />
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>

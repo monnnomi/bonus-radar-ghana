@@ -10,5 +10,9 @@ export function scoreColor(s: number): string {
 
 export const sortByScore = (a: Bonus, b: Bonus) => b.score - a.score;
 
+// Ranked display order: featured (flagship) operators first, then by score.
+export const sortBonuses = (a: Bonus, b: Bonus) =>
+  Number(Boolean(b.featured)) - Number(Boolean(a.featured)) || b.score - a.score;
+
 // The single highest-scoring bonus gets the "Best value" ribbon.
 export const bestId = [...BONUSES].sort(sortByScore)[0].id;

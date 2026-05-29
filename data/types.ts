@@ -38,6 +38,18 @@ export type Bonus = {
   bestFor: string; // review card
   payments: string; // review card (human string)
   avail: string; // "Available now"
+
+  // Optional monetization / flagship fields (real, affiliate operators).
+  slug?: string; // route slug, if different presentation is needed
+  featured?: boolean; // pin to the top of ranked lists
+  award?: string; // short ribbon label shown on the card (e.g. "World Cup pick")
+  tagline?: string; // one-line positioning
+  affiliateUrl?: string; // operator homepage
+  claimUrl?: string; // registration / claim-bonus link (used by CTAs)
+  mobileUrl?: string; // mobile app link
+  casinoUrl?: string; // casino entry link
+  riskNote?: string; // short risk reminder
+  complianceNote?: string; // full compliance line for this operator
 };
 
 export type Filter = { id: FilterId; label: string };

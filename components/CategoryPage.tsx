@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { BONUSES } from "@/data/bonuses";
 import { CATEGORIES, type CategoryKey } from "@/data/categories";
-import { sortByScore } from "@/lib/score";
+import { sortBonuses } from "@/lib/score";
 import { siteUrl } from "@/lib/site";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import PageHeader from "@/components/PageHeader";
@@ -11,7 +11,7 @@ import JsonLd from "@/components/JsonLd";
 
 export default function CategoryPage({ k }: { k: CategoryKey }) {
   const cat = CATEGORIES[k];
-  const list = [...BONUSES].filter(cat.filter).sort(sortByScore);
+  const list = [...BONUSES].filter(cat.filter).sort(sortBonuses);
 
   return (
     <section className="py-[56px]">

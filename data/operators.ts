@@ -4,17 +4,17 @@ import type { AwardPick, Criterion, HeroPick } from "./types";
 // scoring methodology used to rate every operator's bonus.
 
 export const BEST_FOR: AwardPick[] = [
+  { award: "Best World Cup Betting + Casino", id: "betwinner-ghana", stat: "Sportsbook + casino · 2026 World Cup" },
   { award: "Best No-Deposit Bonus", id: "sportybet", stat: "GHS 20 free bet · no deposit" },
   { award: "Best Free Spins", id: "msport", stat: "50 spins · selected slots" },
-  { award: "Best Low Wagering", id: "betwinner", stat: "5× playthrough" },
   { award: "Best Mobile Money Casino", id: "betway", stat: "MTN MoMo · Vodafone Cash" },
   { award: "Best Fast Withdrawal", id: "betway", stat: "Same-day payouts" },
 ];
 
 export const HERO_PICKS: HeroPick[] = [
+  { label: "World Cup + Casino", id: "betwinner-ghana" },
   { label: "Best No Deposit", id: "sportybet" },
   { label: "Best Welcome Bonus", id: "betway" },
-  { label: "Best Low Wagering", id: "betwinner" },
   { label: "Best Mobile Money", id: "msport" },
 ];
 

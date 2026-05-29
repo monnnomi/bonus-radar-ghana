@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import { BONUSES, FILTERS, KYC_DOT, KYC_LABEL, TYPE_CLS } from "@/data/bonuses";
 import type { FilterId } from "@/data/types";
-import { scoreColor, sortByScore } from "@/lib/score";
+import { scoreColor, sortBonuses } from "@/lib/score";
 import SectionHead from "@/components/ui/SectionHead";
 import Logo from "@/components/ui/Logo";
 import BonusCard from "@/components/BonusCard";
@@ -45,12 +45,12 @@ export default function BonusesSection() {
   };
 
   const list = useMemo(() => {
-    let l = [...BONUSES].sort(sortByScore);
+    let l = [...BONUSES].sort(sortBonuses);
     if (active.size) l = l.filter((b) => [...active].every((f) => b.tags.includes(f)));
     return l;
   }, [active]);
 
-  const table = [...BONUSES].sort(sortByScore);
+  const table = [...BONUSES].sort(sortBonuses);
 
   return (
     <>
@@ -149,7 +149,9 @@ export default function BonusesSection() {
                         </td>
                         <td className="px-4 py-4 border-b border-white/[0.07]">
                           <a
-                            href="#"
+                            href={b.claimUrl || "#"}
+                            target={b.claimUrl ? "_blank" : undefined}
+                            rel={b.claimUrl ? "nofollow sponsored noopener" : undefined}
                             className="inline-flex items-center justify-center font-bold text-[13px] min-h-[38px] px-3.5 rounded-[11px] text-[#04140d] bg-gradient-to-b from-brand to-brand2"
                           >
                             Claim

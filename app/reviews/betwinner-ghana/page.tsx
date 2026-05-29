@@ -13,9 +13,9 @@ import BonusCard from "@/components/BonusCard";
 import JsonLd from "@/components/JsonLd";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Betwinner Ghana Review: World Cup Betting, Casino Bonus & Promo Code",
+  title: "Betwinner Ghana Review: 100% Bonus, World Cup Betting & Casino",
   description:
-    "Betwinner Ghana combines football betting, casino games, promo codes and mobile access in one account. Check bonus terms, KYC and availability before you claim.",
+    "Betwinner Ghana offers a 100% first deposit bonus up to €100, football betting, casino games and mobile access. Check terms, KYC and availability before claiming.",
   path: "/reviews/betwinner-ghana",
 });
 
@@ -120,7 +120,8 @@ export default function Page() {
   if (!b) notFound();
 
   const aff = b.affiliateUrl || "#";
-  const claim = b.claimUrl || "#";
+  const bonus = b.bonusUrl || b.claimUrl || "#"; // promoted 100% bonus page
+  const register = b.claimUrl || "#";
   const mobile = b.mobileUrl || "#";
   const casino = b.casinoUrl || "#";
   const related = GUIDES.filter((g) => g.related?.includes(b.id));
@@ -172,7 +173,7 @@ export default function Page() {
 
         {/* Primary CTAs */}
         <div className="mt-7 flex flex-wrap gap-3">
-          <Aff href={claim}>Claim Betwinner Bonus →</Aff>
+          <Aff href={bonus}>Claim Betwinner Bonus →</Aff>
           <Aff href={aff} variant="ghost">
             Visit Betwinner
           </Aff>
@@ -183,13 +184,15 @@ export default function Page() {
           <div>
             <SectionTitle>Overview</SectionTitle>
             <p className="text-muted text-[15.5px] leading-relaxed [text-wrap:pretty]">
-              Betwinner Ghana is a sportsbook and online casino in one account. It fits players who want football
-              betting, casino games, promo codes and welcome offers without jumping between different platforms.
+              Betwinner Ghana is a sportsbook and online casino in one account. New players can claim a{" "}
+              <strong className="text-txt font-semibold">100% first deposit bonus up to €100</strong> through the current
+              promo page, then use one account for World Cup betting, sportsbook markets, casino games and promo bonuses.
             </p>
             <p className="mt-3.5 text-muted text-[15.5px] leading-relaxed [text-wrap:pretty]">
-              For Ghana users, the strongest angle is football. With Ghana playing at the 2026 World Cup, interest in
-              match odds, live betting and tournament promos should be high. Betwinner works well as a simple all-in-one
-              option: bet on football, claim a bonus, and explore casino games from the same account.
+              For Ghana users, the strongest angle is football: Ghana is playing at the 2026 World Cup, so World Cup
+              betting, live football markets and tournament promos should be a major hook. Betwinner works well as a
+              simple all-in-one option — bet on football, claim the bonus, and explore casino games from the same
+              account.
             </p>
 
             <h3 className="font-display font-semibold text-[18px] mt-7 mb-3">Why Betwinner stands out</h3>
@@ -200,11 +203,11 @@ export default function Page() {
             </ul>
 
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 mt-7">
-              <Fact k="Best for" v="World Cup betting + casino bonuses" />
-              <Fact k="Bonus" v="Welcome offer / promo code / free spins" />
+              <Fact k="Best for" v="World Cup betting + casino bonus" />
+              <Fact k="Bonus" v="100% first deposit bonus up to €100" />
               <Fact k="Main sports" v="Football, basketball, tennis, esports" />
               <Fact k="Casino" v="Slots, live casino, roulette, card games" />
-              <Fact k="Promo code" v={b.code || "No code needed"} />
+              <Fact k="Promo code" v={b.code || "No code required — check promo page"} />
               <Fact k="Availability" v="Terms and country access may vary" />
             </div>
           </div>
@@ -274,7 +277,7 @@ export default function Page() {
               sports betting, casino games and bonus offers.
             </p>
             <div className="mt-auto pt-5">
-              <Aff href={claim} variant="ghost">
+              <Aff href={register} variant="ghost">
                 Register Now →
               </Aff>
             </div>
@@ -285,8 +288,8 @@ export default function Page() {
         <div className="mt-14">
           <SectionTitle>Bonus notes</SectionTitle>
           <p className="text-muted text-[15.5px] leading-relaxed max-w-[760px] [text-wrap:pretty]">
-            Betwinner promos may include welcome bonuses, deposit offers, free spins or promo-code deals. The exact offer
-            can change, so always check the current terms before depositing. Things to confirm:
+            Betwinner&rsquo;s current promoted offer is a 100% first deposit bonus up to €100. Check the promo page before
+            depositing, because wagering, expiry, eligible games, KYC and withdrawal rules may change. Things to confirm:
           </p>
           <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-2.5 mt-4 max-w-[640px]">
             {CHECK_BEFORE.map((c) => (
@@ -326,7 +329,7 @@ export default function Page() {
             risk-free way to make money.
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
-            <Aff href={claim}>Claim Betwinner Bonus →</Aff>
+            <Aff href={bonus}>Claim Betwinner Bonus →</Aff>
             <Aff href={aff} variant="ghost">
               Visit Betwinner
             </Aff>

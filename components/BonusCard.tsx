@@ -72,6 +72,9 @@ export default function BonusCard({ b }: { b: Bonus }) {
     setTimeout(() => setCopied(false), 1500);
   };
 
+  // Bonus CTA prefers the promoted offer page, falling back to the claim link.
+  const bonusHref = b.bonusUrl || b.claimUrl;
+
   return (
     <article
       className={
@@ -143,19 +146,21 @@ export default function BonusCard({ b }: { b: Bonus }) {
         <div className="promo-bg flex items-center px-3.5 py-3 rounded-[14px] border border-dashed border-white/15 mb-4">
           <div>
             <div className="font-mono text-[10px] tracking-[0.1em] uppercase text-dim">Promo code</div>
-            <div className="font-mono text-[13px] font-medium text-dim">No code needed — auto-applied</div>
+            <div className="font-mono text-[13px] font-medium text-dim">
+              {b.bonusUrl ? "No code required — claim on the promo page" : "No code needed — auto-applied"}
+            </div>
           </div>
         </div>
       )}
 
       <div className="flex items-center gap-2 mt-auto">
         <a
-          href={b.claimUrl || "#"}
-          target={b.claimUrl ? "_blank" : undefined}
-          rel={b.claimUrl ? "nofollow sponsored noopener" : undefined}
+          href={bonusHref || "#"}
+          target={bonusHref ? "_blank" : undefined}
+          rel={bonusHref ? "nofollow sponsored noopener" : undefined}
           className="flex-1 inline-flex items-center justify-center gap-2 font-bold text-[15px] min-h-[50px] rounded-[13px] text-[#04140d] bg-gradient-to-b from-brand to-brand2 shadow-[0_10px_26px_-10px_rgba(31,217,138,0.85)] transition hover:brightness-105 active:translate-y-px group"
         >
-          Claim Bonus <span className="transition group-hover:translate-x-1">→</span>
+          {b.bonusUrl ? "Get Bonus" : "Claim Bonus"} <span className="transition group-hover:translate-x-1">→</span>
         </a>
         <Link
           href={`/reviews/${b.id}`}

@@ -127,7 +127,9 @@ export default function BonusesSection() {
                             {b.type}
                           </span>
                         </td>
-                        <td className="px-4 py-4 border-b border-white/[0.07] font-mono text-[13px] text-brand">{b.code || "—"}</td>
+                        <td className="px-4 py-4 border-b border-white/[0.07] font-mono text-[13px] text-brand">
+                          {b.code || (b.bonusUrl ? "No code — promo page" : "—")}
+                        </td>
                         <td className="px-4 py-4 border-b border-white/[0.07] font-mono text-[14px]">{b.wagering}</td>
                         <td
                           className="px-4 py-4 border-b border-white/[0.07] font-semibold text-[14px]"
@@ -148,14 +150,19 @@ export default function BonusesSection() {
                           {b.score}
                         </td>
                         <td className="px-4 py-4 border-b border-white/[0.07]">
-                          <a
-                            href={b.claimUrl || "#"}
-                            target={b.claimUrl ? "_blank" : undefined}
-                            rel={b.claimUrl ? "nofollow sponsored noopener" : undefined}
-                            className="inline-flex items-center justify-center font-bold text-[13px] min-h-[38px] px-3.5 rounded-[11px] text-[#04140d] bg-gradient-to-b from-brand to-brand2"
-                          >
-                            Claim
-                          </a>
+                          {(() => {
+                            const href = b.bonusUrl || b.claimUrl;
+                            return (
+                              <a
+                                href={href || "#"}
+                                target={href ? "_blank" : undefined}
+                                rel={href ? "nofollow sponsored noopener" : undefined}
+                                className="inline-flex items-center justify-center font-bold text-[13px] min-h-[38px] px-3.5 rounded-[11px] text-[#04140d] bg-gradient-to-b from-brand to-brand2"
+                              >
+                                Claim
+                              </a>
+                            );
+                          })()}
                         </td>
                       </tr>
                     ))}

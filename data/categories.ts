@@ -55,7 +55,7 @@ export const CATEGORIES: Record<CategoryKey, Category> = {
     sub: "Current bonus codes you can copy and apply at sign-up or deposit. Codes are time-limited — claim while live.",
     metaTitle: "Casino Promo Codes for Ghana",
     metaDescription:
-      "Working casino and betting promo codes for Ghana, with the bonus each one unlocks. Copy the code and check the terms before you claim.",
-    filter: (b) => b.code !== null,
+      "Working casino and betting promo codes for Ghana, with the bonus each one unlocks. Copy the code or open the promo page, and check the terms before you claim.",
+    filter: (b) => b.code !== null || Boolean(b.bonusUrl),
   },
 };

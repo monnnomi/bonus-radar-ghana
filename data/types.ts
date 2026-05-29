@@ -45,7 +45,8 @@ export type Bonus = {
   award?: string; // short ribbon label shown on the card (e.g. "World Cup pick")
   tagline?: string; // one-line positioning
   affiliateUrl?: string; // operator homepage
-  claimUrl?: string; // registration / claim-bonus link (used by CTAs)
+  claimUrl?: string; // registration / claim-bonus link
+  bonusUrl?: string; // promoted bonus offer page (used by bonus/claim CTAs)
   mobileUrl?: string; // mobile app link
   casinoUrl?: string; // casino entry link
   riskNote?: string; // short risk reminder

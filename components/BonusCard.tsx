@@ -62,6 +62,8 @@ function DataCell({ k, children }: { k: string; children: React.ReactNode }) {
 export default function BonusCard({ b }: { b: Bonus }) {
   const [copied, setCopied] = useState(false);
   const isBest = b.id === bestId;
+  const highlight = b.featured || isBest;
+  const ribbon = b.award ?? (isBest ? "Best value" : null);
 
   const copy = () => {
     if (!b.code) return;
@@ -74,12 +76,12 @@ export default function BonusCard({ b }: { b: Bonus }) {
     <article
       className={
         "relative flex flex-col rounded-[20px] border bg-gradient-to-b from-surface2 to-surface p-[22px] shadow-[0_24px_48px_-24px_rgba(0,0,0,0.7)] transition hover:-translate-y-[3px] hover:shadow-[0_26px_50px_-28px_rgba(0,0,0,0.8)] " +
-        (isBest ? "border-brand/30" : "border-white/10 hover:border-brand/30")
+        (highlight ? "border-brand/30" : "border-white/10 hover:border-brand/30")
       }
     >
-      {isBest && (
+      {ribbon && (
         <div className="absolute -top-px right-[18px] font-mono text-[10px] tracking-[0.14em] uppercase font-bold text-[#04140d] bg-gradient-to-b from-brand to-brand2 px-2.5 pt-[5px] pb-1 rounded-b-lg">
-          Best value
+          {ribbon}
         </div>
       )}
       <div className="flex items-start gap-3.5">
@@ -148,7 +150,9 @@ export default function BonusCard({ b }: { b: Bonus }) {
 
       <div className="flex items-center gap-2 mt-auto">
         <a
-          href="#"
+          href={b.claimUrl || "#"}
+          target={b.claimUrl ? "_blank" : undefined}
+          rel={b.claimUrl ? "nofollow sponsored noopener" : undefined}
           className="flex-1 inline-flex items-center justify-center gap-2 font-bold text-[15px] min-h-[50px] rounded-[13px] text-[#04140d] bg-gradient-to-b from-brand to-brand2 shadow-[0_10px_26px_-10px_rgba(31,217,138,0.85)] transition hover:brightness-105 active:translate-y-px group"
         >
           Claim Bonus <span className="transition group-hover:translate-x-1">→</span>
@@ -160,8 +164,8 @@ export default function BonusCard({ b }: { b: Bonus }) {
           Read Review
         </Link>
       </div>
-      <p className="mt-[11px] text-center font-mono text-[10.5px] tracking-[0.04em] text-dim">
-        18+ · Terms apply · Check operator rules
+      <p className="mt-[11px] text-center font-mono text-[10.5px] tracking-[0.04em] text-dim [text-wrap:pretty]">
+        {b.complianceNote || "18+ · Terms apply · Check operator rules"}
       </p>
     </article>
   );

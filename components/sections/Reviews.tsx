@@ -1,5 +1,5 @@
 import { BONUSES } from "@/data/bonuses";
-import { sortByScore } from "@/lib/score";
+import { sortBonuses } from "@/lib/score";
 import SectionHead from "@/components/ui/SectionHead";
 import ReviewCard from "@/components/ReviewCard";
 
@@ -13,7 +13,7 @@ export default function Reviews() {
           sub="What each operator is best for, how you pay in and out, and where the bonus stands today."
         />
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-          {[...BONUSES].sort(sortByScore).map((b) => (
+          {[...BONUSES].sort(sortBonuses).map((b) => (
             <ReviewCard key={b.id} b={b} />
           ))}
         </div>

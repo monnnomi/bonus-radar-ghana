@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { BONUSES, getBonus, KYC_LABEL, TYPE_CLS } from "@/data/bonuses";
 import { GUIDES } from "@/data/guides";
-import { scoreColor } from "@/lib/score";
+import { scoreColor, sortBonuses } from "@/lib/score";
 import { pageMetadata, siteName, siteUrl } from "@/lib/site";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import PageHeader from "@/components/PageHeader";
@@ -16,7 +16,9 @@ import JsonLd from "@/components/JsonLd";
 export const dynamicParams = false;
 
 export function generateStaticParams() {
-  return BONUSES.map((b) => ({ operator: b.id }));
+  // Flagship operators with a bespoke static route (e.g. /reviews/betwinner-ghana)
+  // are handled by their own page, so exclude them from the generic template.
+  return BONUSES.filter((b) => !b.slug).map((b) => ({ operator: b.id }));
 }
 
 export function generateMetadata({ params }: { params: { operator: string } }): Metadata {
@@ -43,7 +45,7 @@ export default function Page({ params }: { params: { operator: string } }) {
   if (!b) notFound();
 
   const related = GUIDES.filter((g) => g.related?.includes(b.id));
-  const others = BONUSES.filter((o) => o.id !== b.id).slice(0, 3);
+  const others = [...BONUSES].filter((o) => o.id !== b.id).sort(sortBonuses).slice(0, 3);
   const full = Math.round(b.score / 2);
 
   const verdict = `${b.name} is best for ${b.bestFor.toLowerCase()}. Its ${b.type.toLowerCase()} — ${b.offer} — carries ${b.wagering} wagering${

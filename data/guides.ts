@@ -9,7 +9,7 @@ export const GUIDES: Guide[] = [
     excerpt: "Our current top-rated welcome offers, ranked by real withdrawable value.",
     read: "8 min",
     date: "May 2026",
-    related: ["betwinner", "betway", "jackpotcity"],
+    related: ["betwinner-ghana", "betway", "jackpotcity"],
     body: [
       {
         paragraphs: [
@@ -83,7 +83,7 @@ export const GUIDES: Guide[] = [
     excerpt: "What 35× really means — and how to calculate it before you claim.",
     read: "7 min",
     date: "Apr 2026",
-    related: ["betwinner", "sportybet"],
+    related: ["betwinner-ghana", "sportybet"],
     body: [
       {
         paragraphs: [

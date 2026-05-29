@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { BONUSES } from "@/data/bonuses";
-import { sortByScore } from "@/lib/score";
+import { sortBonuses } from "@/lib/score";
 import { pageMetadata, siteUrl } from "@/lib/site";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import PageHeader from "@/components/PageHeader";
@@ -17,7 +17,7 @@ export const metadata: Metadata = pageMetadata({
 });
 
 export default function Page() {
-  const list = [...BONUSES].sort(sortByScore);
+  const list = [...BONUSES].sort(sortBonuses);
   return (
     <section className="py-[56px]">
       <div className="mx-auto max-w-site px-5">

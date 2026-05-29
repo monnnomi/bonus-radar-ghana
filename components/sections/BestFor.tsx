@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { getBonus } from "@/data/bonuses";
 import { BEST_FOR } from "@/data/operators";
 import type { AwardPick } from "@/data/types";
@@ -9,8 +10,8 @@ function AwardCard({ x }: { x: AwardPick }) {
   const b = getBonus(x.id);
   if (!b) return null;
   return (
-    <a
-      href="#bonuses"
+    <Link
+      href={`/reviews/${b.id}`}
       className="flex flex-col gap-3.5 p-[18px] rounded-[20px] border border-white/10 bg-gradient-to-b from-surface2 to-surface transition hover:-translate-y-[3px] hover:border-brand/30 hover:shadow-[0_20px_40px_-24px_rgba(0,0,0,0.8)]"
     >
       <div className="font-display font-semibold text-[14.5px] leading-tight tracking-[-0.01em] min-h-[2.4em]">
@@ -26,7 +27,7 @@ function AwardCard({ x }: { x: AwardPick }) {
           {b.score}
         </span>
       </div>
-    </a>
+    </Link>
   );
 }
 

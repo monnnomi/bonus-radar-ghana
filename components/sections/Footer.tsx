@@ -1,9 +1,48 @@
-const FOOT: Record<string, string[]> = {
-  Company: ["About", "Contact", "Sitemap"],
-  Bonuses: ["Casino Bonuses", "No Deposit", "Free Spins", "Promo Codes"],
-  Resources: ["Reviews", "Guides", "How We Rate"],
-  Legal: ["Responsible Gambling", "Affiliate Disclosure", "Privacy Policy", "Terms"],
+import Link from "next/link";
+
+type FootLink = { l: string; href: string };
+
+const FOOT: Record<string, FootLink[]> = {
+  Company: [
+    { l: "About", href: "/" },
+    { l: "Contact", href: "/" },
+    { l: "Sitemap", href: "/sitemap.xml" },
+  ],
+  Bonuses: [
+    { l: "Casino Bonuses", href: "/bonuses" },
+    { l: "No Deposit", href: "/no-deposit" },
+    { l: "Free Spins", href: "/free-spins" },
+    { l: "Promo Codes", href: "/promo-codes" },
+  ],
+  Resources: [
+    { l: "Reviews", href: "/reviews" },
+    { l: "Guides", href: "/guides" },
+    { l: "How We Rate", href: "/#rate" },
+  ],
+  Legal: [
+    { l: "Responsible Gambling", href: "/responsible-gambling" },
+    { l: "Affiliate Disclosure", href: "/affiliate-disclosure" },
+    { l: "Privacy Policy", href: "/privacy-policy" },
+    { l: "Terms", href: "/terms" },
+  ],
 };
+
+function FooterLink({ link }: { link: FootLink }) {
+  const className = "block py-1.5 text-muted text-[14px] transition hover:text-brand";
+  // /sitemap.xml is a route handler, not a page — use a plain anchor.
+  if (link.href.endsWith(".xml")) {
+    return (
+      <a href={link.href} className={className}>
+        {link.l}
+      </a>
+    );
+  }
+  return (
+    <Link href={link.href} className={className}>
+      {link.l}
+    </Link>
+  );
+}
 
 export default function Footer() {
   return (
@@ -25,7 +64,7 @@ export default function Footer() {
         </div>
         <div className="grid gap-8 md:grid-cols-[1.4fr_2fr]">
           <div>
-            <a href="#" className="flex items-center gap-2.5 font-display font-semibold">
+            <Link href="/" className="flex items-center gap-2.5 font-display font-semibold">
               <span className="relative w-[34px] h-[34px] grid place-items-center rounded-[10px] bg-surface2 border border-brand/30">
                 <span className="w-[7px] h-[7px] rounded-full bg-brand" />
               </span>
@@ -33,7 +72,7 @@ export default function Footer() {
                 <b className="text-[15.5px]">Bonus Radar</b>
                 <small className="block text-[10px] text-dim font-mono tracking-[0.12em]">GHANA</small>
               </span>
-            </a>
+            </Link>
             <p className="text-muted text-[14px] mt-3.5 max-w-[320px] [text-wrap:pretty]">
               Independent comparison of casino and betting bonuses for players in Ghana and English-speaking Africa.
               Terms checked, value scored.
@@ -53,10 +92,8 @@ export default function Footer() {
             {Object.entries(FOOT).map(([h, links]) => (
               <div key={h}>
                 <h4 className="font-mono text-[11px] tracking-[0.12em] uppercase text-dim mb-3.5">{h}</h4>
-                {links.map((l) => (
-                  <a key={l} href="#" className="block py-1.5 text-muted text-[14px] transition hover:text-brand">
-                    {l}
-                  </a>
+                {links.map((link) => (
+                  <FooterLink key={link.l} link={link} />
                 ))}
               </div>
             ))}

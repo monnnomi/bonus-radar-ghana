@@ -46,10 +46,15 @@ export type AwardPick = { award: string; id: string; stat: string };
 export type HeroPick = { label: string; id: string };
 export type Criterion = { n: string; t: string; d: string; w: number };
 
+export type GuideSection = { heading?: string; paragraphs: string[] };
+
 export type Guide = {
+  slug: string;
   cat: string;
   title: string;
   excerpt: string;
   read: string;
   date: string;
+  body: GuideSection[];
+  related?: string[]; // bonus ids referenced for internal links
 };

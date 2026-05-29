@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Space_Grotesk, Manrope, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
+import Header from "@/components/sections/Header";
+import Footer from "@/components/sections/Footer";
+import { siteName, siteUrl } from "@/lib/site";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -23,7 +26,6 @@ const jetbrainsMono = JetBrains_Mono({
   display: "swap",
 });
 
-const siteUrl = "https://bonus-radar-ghana.vercel.app";
 const title = "Bonus Radar Ghana — Compare the Best Casino Bonuses";
 const description =
   "Compare casino bonuses, promo codes, free spins and no-deposit offers in Ghana. Wagering, KYC and bonus terms checked before you play.";
@@ -32,7 +34,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
     default: title,
-    template: "%s · Bonus Radar Ghana",
+    template: `%s · ${siteName}`,
   },
   description,
   keywords: [
@@ -43,14 +45,14 @@ export const metadata: Metadata = {
     "mobile money casino",
     "wagering requirements",
   ],
-  applicationName: "Bonus Radar Ghana",
+  applicationName: siteName,
   category: "gambling information",
   alternates: { canonical: "/" },
   openGraph: {
     type: "website",
     locale: "en_GH",
     url: siteUrl,
-    siteName: "Bonus Radar Ghana",
+    siteName,
     title,
     description,
   },
@@ -75,7 +77,11 @@ export default function RootLayout({
       lang="en"
       className={`${spaceGrotesk.variable} ${manrope.variable} ${jetbrainsMono.variable}`}
     >
-      <body className="font-body">{children}</body>
+      <body className="font-body">
+        <Header />
+        <main>{children}</main>
+        <Footer />
+      </body>
     </html>
   );
 }

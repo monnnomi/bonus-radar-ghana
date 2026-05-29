@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import type { Bonus } from "@/data/types";
 import { KYC_DOT, KYC_LABEL, PAY_DOT, TYPE_CLS } from "@/data/bonuses";
 import { bestId } from "@/lib/score";
@@ -152,12 +153,12 @@ export default function BonusCard({ b }: { b: Bonus }) {
         >
           Claim Bonus <span className="transition group-hover:translate-x-1">→</span>
         </a>
-        <a
-          href="#reviews"
+        <Link
+          href={`/reviews/${b.id}`}
           className="inline-flex items-center min-h-[50px] px-3 rounded-[11px] border border-white/10 text-[13px] font-semibold text-muted transition hover:text-brand hover:border-brand/30 hover:bg-brand/10"
         >
           Read Review
-        </a>
+        </Link>
       </div>
       <p className="mt-[11px] text-center font-mono text-[10.5px] tracking-[0.04em] text-dim">
         18+ · Terms apply · Check operator rules

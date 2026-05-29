@@ -10,5 +10,5 @@ export const metadata: Metadata = pageMetadata({
 });
 
 export default function Page() {
-  return <CategoryPage k="bonuses" />;
+  return <CategoryPage k="bonuses" showPromo />;
 }

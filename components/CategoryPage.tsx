@@ -7,9 +7,10 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 import PageHeader from "@/components/PageHeader";
 import BonusGrid from "@/components/BonusGrid";
 import ComplianceNote from "@/components/ComplianceNote";
+import BetwinnerPromo from "@/components/BetwinnerPromo";
 import JsonLd from "@/components/JsonLd";
 
-export default function CategoryPage({ k }: { k: CategoryKey }) {
+export default function CategoryPage({ k, showPromo = false }: { k: CategoryKey; showPromo?: boolean }) {
   const cat = CATEGORIES[k];
   const list = [...BONUSES].filter(cat.filter).sort(sortBonuses);
 
@@ -20,6 +21,8 @@ export default function CategoryPage({ k }: { k: CategoryKey }) {
         <div className="mt-6 mb-9">
           <PageHeader eyebrow={cat.eyebrow} title={cat.title} sub={cat.sub} />
         </div>
+
+        {showPromo && <BetwinnerPromo variant="compact" className="mb-8" />}
 
         <BonusGrid bonuses={list} emptyText="No offers in this category right now. Check back soon." />
 

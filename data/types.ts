@@ -16,8 +16,8 @@ export type FilterId =
 
 export type Bonus = {
   id: string;
-  name: string; // "Betway Ghana"
-  initials: string; // "BW" — used in logo placeholder
+  name: string; // "Casino 1" (placeholder) or a real operator name
+  initials: string; // "C1" — used in logo placeholder
   logoBg: string; // CSS gradient for placeholder logo
   logoColor: string; // text color on the logo
   offer: string; // "100% up to GHS 1,000"

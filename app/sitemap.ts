@@ -27,7 +27,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: p.freq,
       priority: p.priority,
     })),
-    ...BONUSES.map((b) => ({
+    // Only real, live operator reviews are indexable. Placeholder (Casino 1–4)
+    // review pages are noindex, so they are excluded from the sitemap.
+    ...BONUSES.filter((b) => b.active).map((b) => ({
       url: `${siteUrl}/reviews/${b.id}`,
       lastModified: now,
       changeFrequency: "weekly" as const,

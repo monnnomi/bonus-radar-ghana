@@ -75,22 +75,37 @@ export default function Page({ params }: { params: { slug: string } }) {
           <div className="mt-10 p-5 rounded-[20px] border border-white/10 bg-surface">
             <h3 className="font-mono text-[11px] tracking-[0.12em] uppercase text-dim mb-4">Bonuses mentioned</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              {related.map((b) => (
-                <Link
-                  key={b.id}
-                  href={`/reviews/${b.id}`}
-                  className="flex items-center gap-2.5 p-3 rounded-[12px] border border-white/[0.07] bg-surface2 transition hover:border-brand/30"
-                >
-                  <Logo b={b} cls="w-9 h-9 text-[13px] rounded-[9px]" />
-                  <div className="flex flex-col min-w-0 flex-1">
-                    <span className="font-semibold text-[13.5px] truncate">{b.name}</span>
-                    <span className="font-mono text-[11px] text-muted">{b.offer}</span>
+              {related.map((b) =>
+                b.active ? (
+                  <Link
+                    key={b.id}
+                    href={`/reviews/${b.id}`}
+                    className="flex items-center gap-2.5 p-3 rounded-[12px] border border-white/[0.07] bg-surface2 transition hover:border-brand/30"
+                  >
+                    <Logo b={b} cls="w-9 h-9 text-[13px] rounded-[9px]" />
+                    <div className="flex flex-col min-w-0 flex-1">
+                      <span className="font-semibold text-[13.5px] truncate">{b.name}</span>
+                      <span className="font-mono text-[11px] text-muted">{b.offer}</span>
+                    </div>
+                    <span className="font-mono font-bold text-[14px] flex-none" style={{ color: scoreColor(b.score) }}>
+                      {b.score}
+                    </span>
+                  </Link>
+                ) : (
+                  // Placeholder slot — operator not live yet (no fake offer/score/link).
+                  <div
+                    key={b.id}
+                    className="flex items-center gap-2.5 p-3 rounded-[12px] border border-white/[0.07] bg-surface2"
+                  >
+                    <Logo b={b} cls="w-9 h-9 text-[13px] rounded-[9px] opacity-60" />
+                    <div className="flex flex-col min-w-0 flex-1">
+                      <span className="font-semibold text-[13.5px] truncate text-muted">{b.name}</span>
+                      <span className="font-mono text-[11px] text-dim">Coming soon</span>
+                    </div>
+                    <span className="font-mono font-bold text-[13px] flex-none text-dim">SOON</span>
                   </div>
-                  <span className="font-mono font-bold text-[14px] flex-none" style={{ color: scoreColor(b.score) }}>
-                    {b.score}
-                  </span>
-                </Link>
-              ))}
+                )
+              )}
             </div>
           </div>
         )}

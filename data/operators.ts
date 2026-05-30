@@ -7,17 +7,17 @@ import type { AwardPick, Criterion, HeroPick } from "./types";
 // placeholders (no fake operator is shown as a real recommendation).
 export const BEST_FOR: AwardPick[] = [
   { award: "Best World Cup Betting + Casino", id: "betwinner-ghana", stat: "Sportsbook + casino · 2026 World Cup" },
-  { award: "Best No-Deposit Bonus", id: "sportybet", stat: "Coming soon" },
-  { award: "Best Free Spins", id: "msport", stat: "Coming soon" },
-  { award: "Best Mobile Money Casino", id: "betway", stat: "Coming soon" },
-  { award: "Best Fast Withdrawal", id: "jackpotcity", stat: "Coming soon" },
+  { award: "Best No-Deposit Bonus", id: "casino-1", stat: "Coming soon" },
+  { award: "Best Free Spins", id: "casino-3", stat: "Coming soon" },
+  { award: "Best Mobile Money Casino", id: "casino-2", stat: "Coming soon" },
+  { award: "Best Fast Withdrawal", id: "casino-4", stat: "Coming soon" },
 ];
 
 export const HERO_PICKS: HeroPick[] = [
   { label: "World Cup + Casino", id: "betwinner-ghana" },
-  { label: "More offers", id: "sportybet" },
-  { label: "More offers", id: "betway" },
-  { label: "More offers", id: "msport" },
+  { label: "More offers", id: "casino-1" },
+  { label: "More offers", id: "casino-2" },
+  { label: "More offers", id: "casino-3" },
 ];
 
 export const CRITERIA: Criterion[] = [

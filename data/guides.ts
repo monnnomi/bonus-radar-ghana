@@ -9,7 +9,7 @@ export const GUIDES: Guide[] = [
     excerpt: "Our current top-rated welcome offers, ranked by real withdrawable value.",
     read: "8 min",
     date: "May 2026",
-    related: ["betwinner-ghana", "betway", "jackpotcity"],
+    related: ["betwinner-ghana", "casino-2", "casino-4"],
     body: [
       {
         paragraphs: [
@@ -38,7 +38,7 @@ export const GUIDES: Guide[] = [
     excerpt: "Claim free bets and spins without funding your account first.",
     read: "6 min",
     date: "May 2026",
-    related: ["sportybet"],
+    related: ["casino-1"],
     body: [
       {
         paragraphs: [
@@ -61,7 +61,7 @@ export const GUIDES: Guide[] = [
     excerpt: "Where to find spins with fair wagering and slots that actually pay.",
     read: "5 min",
     date: "Apr 2026",
-    related: ["msport"],
+    related: ["casino-3"],
     body: [
       {
         paragraphs: [
@@ -83,7 +83,7 @@ export const GUIDES: Guide[] = [
     excerpt: "What 35× really means — and how to calculate it before you claim.",
     read: "7 min",
     date: "Apr 2026",
-    related: ["betwinner-ghana", "sportybet"],
+    related: ["betwinner-ghana", "casino-1"],
     body: [
       {
         paragraphs: [
@@ -106,7 +106,7 @@ export const GUIDES: Guide[] = [
     excerpt: "Step-by-step: where to enter codes and avoid the common mistakes.",
     read: "4 min",
     date: "Mar 2026",
-    related: ["betway", "jackpotcity"],
+    related: ["casino-2", "casino-4"],
     body: [
       {
         paragraphs: [

@@ -59,8 +59,65 @@ function DataCell({ k, children }: { k: string; children: React.ReactNode }) {
   );
 }
 
+// Placeholder card for operators that are not live yet. Keeps the exact card
+// shell, logo and Ghana tag so the grid stays balanced, but shows "SOON" and
+// disabled controls — no fake bonus, code, score or external links.
+function ComingSoonCard({ b }: { b: Bonus }) {
+  return (
+    <article className="relative flex flex-col rounded-[20px] border border-white/10 bg-gradient-to-b from-surface2 to-surface p-[22px] shadow-[0_24px_48px_-24px_rgba(0,0,0,0.7)]">
+      <div className="absolute -top-px right-[18px] font-mono text-[10px] tracking-[0.14em] uppercase font-bold text-dim bg-surface3 border border-white/10 px-2.5 pt-[5px] pb-1 rounded-b-lg">
+        Soon
+      </div>
+      <div className="flex items-start gap-3.5">
+        <Logo b={b} cls="w-[46px] h-[46px] text-[17px] opacity-60" />
+        <div className="flex-1 min-w-0">
+          <div className="font-display font-semibold text-[16.5px] tracking-[-0.01em] text-muted">{b.name}</div>
+          <div className="flex items-center gap-1.5 mt-1 flex-wrap">
+            <span className="text-[11px] font-semibold px-2 py-[3px] rounded-md border border-white/10 bg-surface3 text-dim">
+              Coming soon
+            </span>
+            <span className="text-[11px] font-semibold px-2 py-[3px] rounded-md border border-white/10 bg-surface3 text-muted">
+              🇬🇭 Ghana
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div className="mt-[18px] mb-1 font-display font-semibold text-[23px] tracking-[-0.02em] leading-[1.1] text-muted">
+        SOON
+      </div>
+      <div className="text-[13px] text-dim">New offer being verified</div>
+
+      <div className="grid grid-cols-2 gap-px my-[18px] rounded-[14px] overflow-hidden border border-white/10 bg-white/10">
+        {["Wagering", "Deposit req.", "KYC", "Max cashout"].map((k) => (
+          <div key={k} className="bg-surface3 px-3.5 py-3">
+            <div className="font-mono text-[10.5px] tracking-[0.08em] uppercase text-muted">{k}</div>
+            <div className="font-bold text-[15.5px] text-dim mt-[5px]">—</div>
+          </div>
+        ))}
+      </div>
+
+      <div className="flex items-center gap-2 mt-auto">
+        <span
+          aria-disabled="true"
+          className="flex-1 inline-flex items-center justify-center gap-2 font-bold text-[15px] min-h-[50px] rounded-[13px] text-dim bg-surface3 border border-white/10 cursor-not-allowed select-none"
+        >
+          Coming soon
+        </span>
+      </div>
+      <p className="mt-[11px] text-center font-mono text-[10.5px] tracking-[0.04em] text-dim [text-wrap:pretty]">
+        18+ · Terms apply · Gamble responsibly
+      </p>
+    </article>
+  );
+}
+
 export default function BonusCard({ b }: { b: Bonus }) {
   const [copied, setCopied] = useState(false);
+
+  // Inactive operators render as clean "SOON" placeholders (no fake data/links).
+  if (!b.active) return <ComingSoonCard b={b} />;
+
   const isBest = b.id === bestId;
   const highlight = b.featured || isBest;
   const ribbon = b.award ?? (isBest ? "Best value" : null);

@@ -10,9 +10,14 @@ export function scoreColor(s: number): string {
 
 export const sortByScore = (a: Bonus, b: Bonus) => b.score - a.score;
 
-// Ranked display order: featured (flagship) operators first, then by score.
+// Ranked display order: active (real) offers first, then featured, then score.
+// Keeps Betwinner pinned at the top and pushes "SOON" placeholders below.
 export const sortBonuses = (a: Bonus, b: Bonus) =>
-  Number(Boolean(b.featured)) - Number(Boolean(a.featured)) || b.score - a.score;
+  Number(Boolean(b.active)) - Number(Boolean(a.active)) ||
+  Number(Boolean(b.featured)) - Number(Boolean(a.featured)) ||
+  b.score - a.score;
 
-// The single highest-scoring bonus gets the "Best value" ribbon.
-export const bestId = [...BONUSES].sort(sortByScore)[0].id;
+// The single active flagship offer (Betwinner). Used for the "Best value" ribbon
+// and anywhere a single real recommendation is needed.
+export const activeBonus = BONUSES.find((b) => b.active);
+export const bestId = activeBonus?.id ?? [...BONUSES].sort(sortByScore)[0].id;

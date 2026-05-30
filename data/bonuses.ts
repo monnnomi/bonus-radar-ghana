@@ -108,6 +108,7 @@ export const BONUSES: Bonus[] = [
   // top of ranked lists. Affiliate links power the Claim / mobile / casino CTAs.
   {
     id: "betwinner-ghana",
+    active: true,
     slug: "betwinner-ghana",
     name: "Betwinner Ghana",
     initials: "BN",

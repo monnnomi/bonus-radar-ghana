@@ -6,6 +6,7 @@ import HowWeRate from "@/components/sections/HowWeRate";
 import Reviews from "@/components/sections/Reviews";
 import ResponsibleGambling from "@/components/sections/ResponsibleGambling";
 import Guides from "@/components/sections/Guides";
+import BetwinnerPromo from "@/components/BetwinnerPromo";
 import JsonLd from "@/components/JsonLd";
 import { siteName, siteUrl } from "@/lib/site";
 
@@ -15,6 +16,9 @@ export default function Home() {
       <Hero />
       <ComplianceStrip />
       <BestFor />
+      <div className="mx-auto max-w-site px-5 pb-2">
+        <BetwinnerPromo />
+      </div>
       <BonusesSection />
       <HowWeRate />
       <Reviews />

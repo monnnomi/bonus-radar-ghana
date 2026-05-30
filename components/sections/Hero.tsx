@@ -91,6 +91,23 @@ export default function Hero() {
             {HERO_PICKS.map((p) => {
               const b = getBonus(p.id);
               if (!b) return null;
+              if (!b.active) {
+                // Placeholder row — keeps the ranking balanced without a fake pick.
+                return (
+                  <div
+                    key={p.id}
+                    className="grid grid-cols-[34px_1fr_auto] items-center gap-3 p-3.5 rounded-[14px] bg-surface2 border border-white/[0.07]"
+                  >
+                    <Logo b={b} cls="w-[34px] h-[34px] text-[14px] rounded-[9px] opacity-50" />
+                    <div className="min-w-0">
+                      <div className="font-mono text-[9.5px] tracking-[0.1em] uppercase text-dim mb-[3px]">{p.label}</div>
+                      <div className="font-semibold text-[14px] text-muted">{b.name}</div>
+                      <div className="font-mono text-[12px] text-dim">Coming soon</div>
+                    </div>
+                    <div className="font-mono font-bold text-[13px] px-2.5 py-1 rounded-lg text-dim bg-surface3">SOON</div>
+                  </div>
+                );
+              }
               return (
                 <div
                   key={p.id}

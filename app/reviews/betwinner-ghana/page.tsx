@@ -10,6 +10,7 @@ import Logo from "@/components/ui/Logo";
 import ScoreRing from "@/components/ui/ScoreRing";
 import { Eyebrow } from "@/components/ui/SectionHead";
 import BonusCard from "@/components/BonusCard";
+import BetwinnerPromo from "@/components/BetwinnerPromo";
 import JsonLd from "@/components/JsonLd";
 
 export const metadata: Metadata = pageMetadata({
@@ -178,6 +179,9 @@ export default function Page() {
             Visit Betwinner
           </Aff>
         </div>
+
+        {/* Promo banner */}
+        <BetwinnerPromo className="mt-8" />
 
         {/* Intro + offer card */}
         <div className="mt-12 grid gap-9 lg:grid-cols-[1.3fr_1fr] lg:items-start">

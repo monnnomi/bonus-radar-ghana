@@ -113,59 +113,86 @@ export default function BonusesSection() {
                     </tr>
                   </thead>
                   <tbody>
-                    {table.map((b) => (
-                      <tr key={b.id} className="hover:bg-surface2">
-                        <td className="px-4 py-4 border-b border-white/[0.07]">
-                          <div className="flex items-center gap-2.5">
-                            <Logo b={b} cls="w-[38px] h-[38px] text-[14px] rounded-[10px]" />
-                            <span className="font-display font-semibold text-[14px]">{b.name}</span>
-                          </div>
-                        </td>
-                        <td className="px-4 py-4 border-b border-white/[0.07] font-semibold text-[14px]">{b.offer}</td>
-                        <td className="px-4 py-4 border-b border-white/[0.07]">
-                          <span className={"text-[11px] font-semibold px-2 py-[3px] rounded-md border " + TYPE_CLS[b.typeClass]}>
-                            {b.type}
-                          </span>
-                        </td>
-                        <td className="px-4 py-4 border-b border-white/[0.07] font-mono text-[13px] text-brand">
-                          {b.code || (b.bonusUrl ? "No code — promo page" : "—")}
-                        </td>
-                        <td className="px-4 py-4 border-b border-white/[0.07] font-mono text-[14px]">{b.wagering}</td>
-                        <td
-                          className="px-4 py-4 border-b border-white/[0.07] font-semibold text-[14px]"
-                          style={{ color: b.deposit ? "#f0d68a" : "#1fd98a" }}
-                        >
-                          {b.deposit ? "Yes" : "No"}
-                        </td>
-                        <td className="px-4 py-4 border-b border-white/[0.07] text-[14px]">
-                          <span className="inline-flex items-center gap-1.5">
-                            <span className="w-2 h-2 rounded-full" style={{ background: KYC_DOT[b.kyc] }} />
-                            {KYC_LABEL[b.kyc]}
-                          </span>
-                        </td>
-                        <td
-                          className="px-4 py-4 border-b border-white/[0.07] font-mono font-bold text-[16px]"
-                          style={{ color: scoreColor(b.score) }}
-                        >
-                          {b.score}
-                        </td>
-                        <td className="px-4 py-4 border-b border-white/[0.07]">
-                          {(() => {
-                            const href = b.bonusUrl || b.claimUrl;
-                            return (
-                              <a
-                                href={href || "#"}
-                                target={href ? "_blank" : undefined}
-                                rel={href ? "nofollow sponsored noopener" : undefined}
-                                className="inline-flex items-center justify-center font-bold text-[13px] min-h-[38px] px-3.5 rounded-[11px] text-[#04140d] bg-gradient-to-b from-brand to-brand2"
-                              >
-                                Claim
-                              </a>
-                            );
-                          })()}
-                        </td>
-                      </tr>
-                    ))}
+                    {table.map((b) =>
+                      b.active ? (
+                        <tr key={b.id} className="hover:bg-surface2">
+                          <td className="px-4 py-4 border-b border-white/[0.07]">
+                            <div className="flex items-center gap-2.5">
+                              <Logo b={b} cls="w-[38px] h-[38px] text-[14px] rounded-[10px]" />
+                              <span className="font-display font-semibold text-[14px]">{b.name}</span>
+                            </div>
+                          </td>
+                          <td className="px-4 py-4 border-b border-white/[0.07] font-semibold text-[14px]">{b.offer}</td>
+                          <td className="px-4 py-4 border-b border-white/[0.07]">
+                            <span className={"text-[11px] font-semibold px-2 py-[3px] rounded-md border " + TYPE_CLS[b.typeClass]}>
+                              {b.type}
+                            </span>
+                          </td>
+                          <td className="px-4 py-4 border-b border-white/[0.07] font-mono text-[13px] text-brand">
+                            {b.code || (b.bonusUrl ? "No code — promo page" : "—")}
+                          </td>
+                          <td className="px-4 py-4 border-b border-white/[0.07] font-mono text-[14px]">{b.wagering}</td>
+                          <td
+                            className="px-4 py-4 border-b border-white/[0.07] font-semibold text-[14px]"
+                            style={{ color: b.deposit ? "#f0d68a" : "#1fd98a" }}
+                          >
+                            {b.deposit ? "Yes" : "No"}
+                          </td>
+                          <td className="px-4 py-4 border-b border-white/[0.07] text-[14px]">
+                            <span className="inline-flex items-center gap-1.5">
+                              <span className="w-2 h-2 rounded-full" style={{ background: KYC_DOT[b.kyc] }} />
+                              {KYC_LABEL[b.kyc]}
+                            </span>
+                          </td>
+                          <td
+                            className="px-4 py-4 border-b border-white/[0.07] font-mono font-bold text-[16px]"
+                            style={{ color: scoreColor(b.score) }}
+                          >
+                            {b.score}
+                          </td>
+                          <td className="px-4 py-4 border-b border-white/[0.07]">
+                            {(() => {
+                              const href = b.bonusUrl || b.claimUrl;
+                              return (
+                                <a
+                                  href={href || "#"}
+                                  target={href ? "_blank" : undefined}
+                                  rel={href ? "nofollow sponsored noopener" : undefined}
+                                  className="inline-flex items-center justify-center font-bold text-[13px] min-h-[38px] px-3.5 rounded-[11px] text-[#04140d] bg-gradient-to-b from-brand to-brand2"
+                                >
+                                  Claim
+                                </a>
+                              );
+                            })()}
+                          </td>
+                        </tr>
+                      ) : (
+                        // Placeholder row — operator not live yet (no fake data/links).
+                        <tr key={b.id} className="text-dim">
+                          <td className="px-4 py-4 border-b border-white/[0.07]">
+                            <div className="flex items-center gap-2.5">
+                              <Logo b={b} cls="w-[38px] h-[38px] text-[14px] rounded-[10px] opacity-60" />
+                              <span className="font-display font-semibold text-[14px] text-muted">{b.name}</span>
+                            </div>
+                          </td>
+                          <td className="px-4 py-4 border-b border-white/[0.07] font-semibold text-[14px] text-muted">SOON</td>
+                          <td className="px-4 py-4 border-b border-white/[0.07] text-[14px]">—</td>
+                          <td className="px-4 py-4 border-b border-white/[0.07] text-[14px]">—</td>
+                          <td className="px-4 py-4 border-b border-white/[0.07] text-[14px]">—</td>
+                          <td className="px-4 py-4 border-b border-white/[0.07] text-[14px]">—</td>
+                          <td className="px-4 py-4 border-b border-white/[0.07] text-[14px]">—</td>
+                          <td className="px-4 py-4 border-b border-white/[0.07] text-[14px]">—</td>
+                          <td className="px-4 py-4 border-b border-white/[0.07]">
+                            <span
+                              aria-disabled="true"
+                              className="inline-flex items-center justify-center font-semibold text-[12px] min-h-[38px] px-3.5 rounded-[11px] text-dim bg-surface3 border border-white/10 cursor-not-allowed select-none whitespace-nowrap"
+                            >
+                              Coming soon
+                            </span>
+                          </td>
+                        </tr>
+                      )
+                    )}
                   </tbody>
                 </table>
               </div>

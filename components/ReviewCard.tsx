@@ -4,6 +4,38 @@ import { scoreColor } from "@/lib/score";
 import Logo from "@/components/ui/Logo";
 
 export default function ReviewCard({ b }: { b: Bonus }) {
+  // Operators that are not live yet show a clean "SOON" placeholder review card
+  // with no fake rating, data or link.
+  if (!b.active) {
+    return (
+      <article className="flex flex-col p-5 rounded-[20px] border border-white/10 bg-surface">
+        <div className="flex items-center gap-3.5">
+          <Logo b={b} cls="w-[50px] h-[50px] text-[16px] opacity-60" />
+          <div>
+            <div className="font-display font-semibold text-[16px] text-muted">{b.name}</div>
+            <span className="inline-block mt-1.5 text-[11px] font-semibold px-2 py-[3px] rounded-md border border-white/10 bg-surface3 text-dim">
+              Coming soon
+            </span>
+          </div>
+        </div>
+        <div className="my-4 flex flex-col gap-2.5">
+          {["Best for", "Payments", "Bonus"].map((k) => (
+            <div key={k} className="flex justify-between gap-3 text-[13px]">
+              <span className="text-dim">{k}</span>
+              <span className="text-dim font-medium text-right">—</span>
+            </div>
+          ))}
+        </div>
+        <span
+          aria-disabled="true"
+          className="mt-auto inline-flex items-center justify-center min-h-[44px] rounded-[11px] border border-white/10 bg-surface3 font-semibold text-[14px] text-dim cursor-not-allowed select-none"
+        >
+          Review coming soon
+        </span>
+      </article>
+    );
+  }
+
   const full = Math.round(b.score / 2);
   return (
     <article className="flex flex-col p-5 rounded-[20px] border border-white/10 bg-surface transition hover:-translate-y-0.5 hover:border-brand/30">

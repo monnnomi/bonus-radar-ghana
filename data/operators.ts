@@ -3,19 +3,21 @@ import type { AwardPick, Criterion, HeroPick } from "./types";
 // Operator-centric curation: category winners, the live hero ranking, and the
 // scoring methodology used to rate every operator's bonus.
 
+// Betwinner is the only active pick; the remaining categories render as "SOON"
+// placeholders (no fake operator is shown as a real recommendation).
 export const BEST_FOR: AwardPick[] = [
   { award: "Best World Cup Betting + Casino", id: "betwinner-ghana", stat: "Sportsbook + casino · 2026 World Cup" },
-  { award: "Best No-Deposit Bonus", id: "sportybet", stat: "GHS 20 free bet · no deposit" },
-  { award: "Best Free Spins", id: "msport", stat: "50 spins · selected slots" },
-  { award: "Best Mobile Money Casino", id: "betway", stat: "MTN MoMo · Vodafone Cash" },
-  { award: "Best Fast Withdrawal", id: "betway", stat: "Same-day payouts" },
+  { award: "Best No-Deposit Bonus", id: "sportybet", stat: "Coming soon" },
+  { award: "Best Free Spins", id: "msport", stat: "Coming soon" },
+  { award: "Best Mobile Money Casino", id: "betway", stat: "Coming soon" },
+  { award: "Best Fast Withdrawal", id: "jackpotcity", stat: "Coming soon" },
 ];
 
 export const HERO_PICKS: HeroPick[] = [
   { label: "World Cup + Casino", id: "betwinner-ghana" },
-  { label: "Best No Deposit", id: "sportybet" },
-  { label: "Best Welcome Bonus", id: "betway" },
-  { label: "Best Mobile Money", id: "msport" },
+  { label: "More offers", id: "sportybet" },
+  { label: "More offers", id: "betway" },
+  { label: "More offers", id: "msport" },
 ];
 
 export const CRITERIA: Criterion[] = [

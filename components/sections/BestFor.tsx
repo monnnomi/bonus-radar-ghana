@@ -9,6 +9,27 @@ import Logo from "@/components/ui/Logo";
 function AwardCard({ x }: { x: AwardPick }) {
   const b = getBonus(x.id);
   if (!b) return null;
+
+  // Placeholder award card — category not assigned to a real operator yet.
+  // No link, no fake score, so it never reads as a real recommendation.
+  if (!b.active) {
+    return (
+      <div className="flex flex-col gap-3.5 p-[18px] rounded-[20px] border border-white/10 bg-gradient-to-b from-surface2 to-surface">
+        <div className="font-display font-semibold text-[14.5px] leading-tight tracking-[-0.01em] min-h-[2.4em] text-muted">
+          {x.award}
+        </div>
+        <div className="flex items-center gap-2.5">
+          <Logo b={b} cls="w-10 h-10 text-[14px] rounded-[10px] opacity-50" />
+          <div className="flex flex-col min-w-0 flex-1">
+            <span className="font-semibold text-[14px] text-muted truncate">Coming soon</span>
+            <span className="font-mono text-[11px] text-dim">New pick being verified</span>
+          </div>
+          <span className="font-mono font-bold text-[13px] flex-none text-dim">SOON</span>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <Link
       href={`/reviews/${b.id}`}

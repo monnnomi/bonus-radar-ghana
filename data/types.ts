@@ -40,6 +40,7 @@ export type Bonus = {
   avail: string; // "Available now"
 
   // Optional monetization / flagship fields (real, affiliate operators).
+  active?: boolean; // real, live offer. Inactive operators render as "SOON" placeholders.
   slug?: string; // route slug, if different presentation is needed
   featured?: boolean; // pin to the top of ranked lists
   award?: string; // short ribbon label shown on the card (e.g. "World Cup pick")
